@@ -1,10 +1,10 @@
+import Image from 'next/image';
+import Logo from '@images/Logo.png';
+
 export default function Home() {
   return (
     <div className="flex h-screen items-center justify-center text-4xl">
-      <span className="text-main-default">지</span>
-      <span className="text-main-base">마</span>
-      <span className="text-main-medium">켓</span>
-      <span className="text-main-light">산</span>스
+      <Image src={Logo} width={200} height={200} alt="로고" />
     </div>
   );
 }
