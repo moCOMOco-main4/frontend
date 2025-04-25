@@ -17,6 +17,7 @@ const config: Config = {
           base: '#C3D7B0',
           medium: '#E1EBC7',
           light: '#F7FFE6',
+          header: '#A0B092',
         },
       },
     },
