@@ -1,7 +1,12 @@
 name: ci
 
 on:
-  [push, pull_request]
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   build:
@@ -24,7 +29,7 @@ jobs:
           destination-repository-name: mocomoco-FE
           user-email: ${{ secrets.FE_ACCOUNT_EMAIL }}
           commit-message: "Deploy from GitHub Actions"
-          target-branch: main
+          target-branch: develop
 
       - name: Test get variable exported by push-to-another-repository
         run: echo $DESTINATION_CLONED_DIRECTORY
