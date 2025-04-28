@@ -2,9 +2,9 @@ import React from 'react';
 
 export default function Mypage() {
   return (
-    <div className="bg-[#F7FFE6] min-h-screen font-['Pretendard']" role="main" aria-label="마이페이지">
+    <main className="bg-[#F7FFE6] min-h-screen font-['Pretendard']" role="main" aria-label="마이페이지">
       {/* 마이페이지 카드 */}
-      <main className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen">
         <section className="bg-[#E1F0D3] rounded-2xl shadow-sm p-12 min-w-[700px] min-h-[500px] flex flex-col items-center" role="region" aria-label="사용자 정보">
           <h2 className="text-2xl font-semibold mb-6" role="heading" aria-level={2}>USER NAME 님의정보</h2>
           <img src="/images/Logo.png" alt="프로필" className="w-40 h-40 rounded-full object-cover mb-3" role="img" aria-label="프로필 이미지" />
@@ -25,13 +25,23 @@ export default function Mypage() {
             <div className="flex flex-col gap-3 border border-moko-border bg-[#F6FBEF] rounded-[20px]" role="region" aria-label="스택 및 링크">
               <div className="bg-moko-bg rounded-lg p-4 min-w-[220px] min-h-[80px]">
                 <div className="font-semibold mb-2" role="heading" aria-level={3}>사용 가능 스택</div>
-                <div className="flex gap-2" role="list" aria-label="스택 목록">
-                  <img src="/images/stack_js.svg" alt="js" className="w-9 h-9" role="img" aria-label="JavaScript" />
-                  <img src="/images/stack_ts.png" alt="ts" className="w-9 h-9" role="img" aria-label="TypeScript" />
-                  <img src="/images/stack_React.png" alt="react" className="w-9 h-9" role="img" aria-label="React" />
-                  <img src="/images/stack_next.png" alt="next" className="w-9 h-9" role="img" aria-label="Next.js" />
-                  <img src="/images/stack_git.png" alt="git" className="w-9 h-9" role="img" aria-label="Git" />
-                </div>
+                <nav className="flex gap-2" role="list" aria-label="스택 목록">
+                  <li className="list-none">
+                    <img src="/images/stack_js.svg" alt="js" className="w-9 h-9" role="img" aria-label="JavaScript" />
+                  </li>
+                  <li className="list-none">
+                    <img src="/images/stack_ts.png" alt="ts" className="w-9 h-9" role="img" aria-label="TypeScript" />
+                  </li>
+                  <li className="list-none">
+                    <img src="/images/stack_React.png" alt="react" className="w-9 h-9" role="img" aria-label="React" />
+                  </li>
+                  <li className="list-none">
+                    <img src="/images/stack_next.png" alt="next" className="w-9 h-9" role="img" aria-label="Next.js" />
+                  </li>
+                  <li className="list-none">
+                    <img src="/images/stack_git.png" alt="git" className="w-9 h-9" role="img" aria-label="Git" />
+                  </li>
+                </nav>
               </div>
               <div className="bg-moko-bg rounded-lg p-4 min-w-[220px]">
                 <div className="font-semibold mb-2" role="heading" aria-level={3}>링크</div>
@@ -40,7 +50,7 @@ export default function Mypage() {
             </div>
           </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
