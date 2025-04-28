@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: pandoc/latex
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: creates output
+        run: sh ./build.sh
+
+      - name: Pushes to another repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.FE_GITHUB_KEY }}
+        with:
+          source-directory: 'output'
+          destination-github-username: seonysun
+          destination-repository-name: mocomoco-FE
+          user-email: ${{ secrets.FE_ACCOUNT_EMAIL }}
+          commit-message: "Deploy from GitHub Actions"
+          target-branch: develop
+
+      - name: Test get variable exported by push-to-another-repository
+        run: echo $DESTINATION_CLONED_DIRECTORY
