@@ -19,11 +19,11 @@ const config: Config = {
           light: '#F7FFE6',
           header: '#A0B092',
         },
-        danger: {
+        red: {
           default: '#DE5D5D',
           hover: '#c94a4a',
         },
-        success: {
+        green: {
           default: '#6AA78B',
           hover: '#5c9579',
         },

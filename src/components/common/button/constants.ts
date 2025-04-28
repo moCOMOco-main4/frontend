@@ -5,8 +5,8 @@ export const btnSizeMap = {
 } as const;
 
 export const btnColorMap = {
-  success: 'bg-success-default text-white hover:bg-success-hover',
-  danger: 'bg-danger-default text-white hover:bg-danger-hover',
+  green: 'bg-green-default text-white hover:bg-green-hover',
+  red: 'bg-red-default text-white hover:bg-red-hover',
   dark: 'bg-main-header text-white',
   outline: 'border border-black text-black',
 } as const;
