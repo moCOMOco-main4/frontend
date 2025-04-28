@@ -16,10 +16,18 @@ export default function Login() {
         </div>
         <div className="flex flex-col items-center justify-center">
           <div className="cursor-pointer">
-            <Image src={kakao} alt="카카오 로그인" width={400} height={100} />
+            <Image
+              src={kakao}
+              alt="카카오 로그인"
+              className="h-[70px] w-[400px]"
+            />
           </div>
           <div className="cursor-pointer">
-            <Image src={naver} alt="네이버 로그인" width={400} height={100} />
+            <Image
+              src={naver}
+              alt="네이버 로그인"
+              className="h-[70px] w-[400px]"
+            />
           </div>
         </div>
       </div>
