@@ -1,4 +1,6 @@
-import { BTNCOLORMAP, BTNSIZEMAP } from '@/components/common/button/constants';
+'use client';
+
+import { btnColorMap, btnSizeMap } from '@/components/common/button/constants';
 import ButtonProps from '@/components/common/button/types';
 
 const Button: React.FC<ButtonProps> = ({
@@ -11,8 +13,8 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   ...props
 }) => {
-  const sizeClass = BTNSIZEMAP[size];
-  const colorClass = BTNCOLORMAP[color];
+  const sizeClass = btnSizeMap[size];
+  const colorClass = btnColorMap[color];
   const combinedClassName = `w-full rounded-2xl transition-colors focus:outline-none ${sizeClass} ${colorClass} ${className}`;
 
   return (
