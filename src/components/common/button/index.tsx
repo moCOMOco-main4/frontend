@@ -1,21 +1,11 @@
-import ButtonProps from '@/components/common/Button/types';
+'use client';
 
-const sizeClassMap = {
-  sm: 'h-8 text-sm',
-  md: 'h-10',
-  lg: 'h-12 text-lg',
-} as const;
-
-const colorClassMap = {
-  success: 'bg-success-default text-white hover:bg-success-hover',
-  danger: 'bg-danger-default text-white hover:bg-danger-hover',
-  dark: 'bg-main-header text-white',
-  outline: 'border border-black text-black',
-} as const;
+import { btnColorMap, btnSizeMap } from '@/components/common/button/constants';
+import ButtonProps from '@/components/common/button/types';
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  color = 'success',
+  color = 'green',
   size = 'md',
   type = 'button',
   className = '',
@@ -23,9 +13,8 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   ...props
 }) => {
-  const sizeClass = sizeClassMap[size];
-  const colorClass = colorClassMap[color];
-
+  const sizeClass = btnSizeMap[size];
+  const colorClass = btnColorMap[color];
   const combinedClassName = `w-full rounded-2xl transition-colors focus:outline-none ${sizeClass} ${colorClass} ${className}`;
 
   return (
