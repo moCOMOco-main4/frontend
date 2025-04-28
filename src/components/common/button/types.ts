@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
-  color?: 'success' | 'danger' | 'dark' | 'outline';
+  color?: 'green' | 'red' | 'dark' | 'outline';
   size?: 'sm' | 'md' | 'lg';
 };
 
