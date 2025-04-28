@@ -1,3 +1,5 @@
+'use client';
+
 // components/CommonInput.tsx
 import React from 'react';
 import { InputProps } from '@/components/common/input/types';
