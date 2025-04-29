@@ -11,18 +11,18 @@ export default function Mypage() {
           <div className="font-semibold text-xl mb-2" role="text" aria-label="사용자 이름">USER NAME</div>
           {/* 탭 */}
           <div className="flex gap-2 mb-6 w-full justify-start">
-            <div className="bg-white border border-moko-border rounded-lg px-4 py-1 font-medium">프론트엔드</div>
-            <div className="bg-white border border-moko-border rounded-lg px-4 py-1 font-medium">디자이너</div>
+            <div className="bg-white border rounded-lg px-4 py-1 font-medium">프론트엔드</div>
+            <div className="bg-white border rounded-lg px-4 py-1 font-medium">디자이너</div>
           </div>
           {/* 정보 카드 */}
           <div className="flex gap-6 w-full justify-between">
             {/* 자기소개 */}
-            <div className="bg-[#F6FBEF] rounded-[20px] p-4 min-w-[310px] min-h-[160px] flex flex-col border border-moko-border" role="region" aria-label="자기소개">
+            <div className="bg-[#F6FBEF] rounded-[20px] p-4 min-w-[310px] min-h-[160px] flex flex-col border" role="region" aria-label="자기소개">
               <div className="font-semibold mb-2" role="heading" aria-level={3}>자기소개</div>
               <div className="text-gray-500 text-sm" role="text" aria-label="자기소개 내용">반갑습니다!</div>
             </div>
             {/* 스택 및 링크 */}
-            <div className="flex flex-col gap-3 border border-moko-border bg-[#F6FBEF] rounded-[20px]" role="region" aria-label="스택 및 링크">
+            <div className="flex flex-col gap-3 border bg-[#F6FBEF] rounded-[20px]" role="region" aria-label="스택 및 링크">
               <div className="bg-moko-bg rounded-lg p-4 min-w-[220px] min-h-[80px]">
                 <div className="font-semibold mb-2" role="heading" aria-level={3}>사용 가능 스택</div>
                 <nav className="flex gap-2" role="list" aria-label="스택 목록">
@@ -45,7 +45,7 @@ export default function Mypage() {
               </div>
               <div className="bg-moko-bg rounded-lg p-4 min-w-[220px]">
                 <div className="font-semibold mb-2" role="heading" aria-level={3}>링크</div>
-                <input type="text" value="https://github.com/" readOnly className="w-full border border-moko-border rounded-md p-1 bg-white" role="textbox" aria-label="GitHub 링크" />
+                <input type="text" value="https://github.com/" readOnly className="w-full border rounded-md p-1 bg-white" role="textbox" aria-label="GitHub 링크" />
               </div>
             </div>
           </div>
