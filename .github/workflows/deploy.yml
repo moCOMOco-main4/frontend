@@ -1,4 +1,4 @@
-name: ci
+name: CI/CD
 
 on:
   push:
@@ -19,6 +19,12 @@ jobs:
       - name: creates output
         run: sh ./build.sh
 
+      - name: Upload output artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: output
+          path: output/
+
   deploy:
     name: Deploy
     needs: build
@@ -26,7 +32,11 @@ jobs:
     if: github.event_name == 'push'
     container: pandoc/latex
     steps:
-      - uses: actions/checkout@v4
+      - name: Download output artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: output
+          path: output/
 
       - name: Pushes to another repository
         id: push_directory
