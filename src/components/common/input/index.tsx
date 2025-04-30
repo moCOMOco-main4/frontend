@@ -19,7 +19,7 @@ const CommonInput: React.FC<InputProps> = ({
 
       {box === 'textarea' ? (
         <textarea
-          className="min-h-[120px] w-full resize-none rounded-xl border border-main-base p-3 shadow-sm transition focus:outline-none"
+          className="min-h-[120px] w-full resize-none rounded-xl border border-main-base bg-transparent p-3 text-[15px] shadow-sm transition focus:outline-none"
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -29,8 +29,8 @@ const CommonInput: React.FC<InputProps> = ({
         <input
           className={`w-full ${
             box === 'box'
-              ? 'rounded-xl border border-main-base p-3 shadow-sm transition focus:outline-none'
-              : 'border-b border-main-base bg-transparent transition-all focus:outline-none'
+              ? 'rounded-xl border border-main-base p-3 text-[15px] shadow-sm transition focus:outline-none'
+              : 'border-b border-main-base bg-transparent text-[15px] transition-all focus:outline-none'
           }`}
           type="text"
           placeholder={placeholder}
