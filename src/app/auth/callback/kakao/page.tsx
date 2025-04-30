@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function KakaoCallback() {
   // useRouter : 페이지 이동
@@ -11,7 +12,7 @@ export default function KakaoCallback() {
     const handleKakaoLogin = async (code: string) => {
       try {
         const response = await fetch(
-          'http://localhost:8000/api/auth/callback/kakao',
+          'http://localhost:8000/accounts/kakao/callback/',
           {
             method: 'POST',
             headers: {
@@ -30,8 +31,10 @@ export default function KakaoCallback() {
 
         const data = await response.json();
 
-        if (data.access_token) {
-          localStorage.setItem('access_token', data.access_token);
+        if (data.access && data.refresh && data.user) {
+          localStorage.setItem('access_token', data.access);
+          localStorage.setItem('refresh_token', data.refresh);
+          useAuthStore.getState().setAuth(data.access, data.refresh, data.user);
         }
 
         // 유저 상태에 따라 분기 처리 : Record< 키, 값 > 타입 지정

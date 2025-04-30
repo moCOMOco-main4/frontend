@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { strict } from 'assert';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function NaverCallback() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function NaverCallback() {
     const handleNaverLogin = async (code: string, state: string) => {
       try {
         const response = await fetch(
-          'http://localhost:8000/api/auth/callback/naver',
+          'http://localhost:8000/accounts/naver/callback/',
           {
             method: 'POST',
             headers: {
@@ -31,8 +32,10 @@ export default function NaverCallback() {
 
         const data = await response.json();
 
-        if (data.accessToken) {
-          localStorage.setItem('access_token', data.accessToken);
+        if (data.access && data.refresh && data.user) {
+          localStorage.setItem('access_token', data.access);
+          localStorage.setItem('refresh_token', data.refresh);
+          useAuthStore.getState().setAuth(data.access, data.refresh, data.user);
         }
 
         const routeMap: Record<string, string> = {
