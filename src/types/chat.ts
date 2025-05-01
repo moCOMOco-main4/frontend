@@ -7,3 +7,12 @@ export type ChatRoom = {
   unreadCount: number; //안읽은 메시지
   participants: string[]; //참여자 리스트
 };
+
+export type Chats = {
+  roomId: string; //채팅방 id
+  messageId: number; //메시지 id
+  userId: number; //작성자 id
+  username: string; //작성자 닉네임
+  content: string; //본문
+  createdAt: string; //전송시간
+};

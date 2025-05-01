@@ -4,8 +4,9 @@ import { useState } from 'react';
 import FloatingButton from '@/components/common/button/FloatingButton';
 import FavoriteButton from '@/components/common/button/FavoriteButton';
 import ToggleButton from '@/components/common/button/ToggleButton';
-import ChatRooms from '@/components/ChatRooms';
+import ChatRooms from '@/components/chats/ChatRooms';
 import ChatModal from '@/components/common/modal/ChatModal';
+import ChatMessage from '@/components/chats/ChatMessage';
 
 export default function HomePage() {
   const [isOn, setIsOn] = useState(false);
@@ -19,7 +20,7 @@ export default function HomePage() {
       <ToggleButton isOn={isOn} handleToggle={next => setIsOn(next)} />
       {isChatOpen ? (
         <ChatModal onClose={() => setIsChatOpen(false)}>
-          <ChatRooms
+          {/* <ChatRooms
             chatRoomList={[
               {
                 roomId: 'a1b2c3',
@@ -33,6 +34,26 @@ export default function HomePage() {
             ]}
             chatType={chatType}
             setChatType={setChatType}
+          /> */}
+          <ChatMessage
+            chats={[
+              {
+                roomId: 'aa',
+                messageId: 5,
+                userId: 7,
+                username: '우중',
+                content: '안녕하세요!',
+                createdAt: '2025-04-25T15:30:00',
+              },
+              {
+                roomId: 'aa',
+                messageId: 6,
+                userId: 2,
+                username: '지안',
+                content: '몇시에 만나실래요?',
+                createdAt: '2025-04-25T15:31:02',
+              },
+            ]}
           />
         </ChatModal>
       ) : (
