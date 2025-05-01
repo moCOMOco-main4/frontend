@@ -1,9 +1,15 @@
 'use client';
 
 import { btnColorMap, btnSizeMap } from '@/components/common/button/constants';
-import ButtonProps from '@/components/common/button/types';
+import { ButtonHTMLAttributes } from 'react';
 
-const Button: React.FC<ButtonProps> = ({
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  children: React.ReactNode;
+  color?: 'green' | 'red' | 'dark' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+};
+
+const Button = ({
   children,
   color = 'green',
   size = 'md',
@@ -12,15 +18,15 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   disabled = false,
   ...props
-}) => {
+}: ButtonProps) => {
   const sizeClass = btnSizeMap[size];
   const colorClass = btnColorMap[color];
-  const combinedClassName = `w-full rounded-2xl transition-colors focus:outline-none ${sizeClass} ${colorClass} ${className}`;
+  const buttonClass = `w-full rounded-2xl transition-colors focus:outline-none ${sizeClass} ${colorClass} ${className}`;
 
   return (
     <button
       type={type}
-      className={combinedClassName}
+      className={buttonClass}
       onClick={onClick}
       disabled={disabled}
       {...props}

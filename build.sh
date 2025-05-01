@@ -1,5 +1,3 @@
 #!/bin/sh
-cd ../
-mkdir output
-cp -R ./frontend/* ./output
-cp -R ./output ./frontend/
+mkdir -p output
+cp -R public src *.json *.mjs *.js *.ts output/ 2>/dev/null || true

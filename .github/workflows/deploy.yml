@@ -1,4 +1,4 @@
-name: ci
+name: CI/CD
 
 on:
   push:
@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Build & Test
     runs-on: ubuntu-latest
     container: pandoc/latex
     steps:
@@ -17,6 +18,25 @@ jobs:
 
       - name: creates output
         run: sh ./build.sh
+
+      - name: Upload output artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: output
+          path: output/
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    container: pandoc/latex
+    steps:
+      - name: Download output artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: output
+          path: output/
 
       - name: Pushes to another repository
         id: push_directory
@@ -28,7 +48,7 @@ jobs:
           destination-github-username: seonysun
           destination-repository-name: mocomoco-FE
           user-email: ${{ secrets.FE_ACCOUNT_EMAIL }}
-          commit-message: "Deploy from GitHub Actions"
+          commit-message: 'Deploy from GitHub Actions'
           target-branch: develop
 
       - name: Test get variable exported by push-to-another-repository
