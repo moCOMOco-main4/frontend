@@ -9,7 +9,7 @@ import { useRef } from 'react';
 
 type chatProps = {
   onClose: () => void;
-  chatRoomList?: ChatRoom[];
+  chatRoomList: ChatRoom[];
   chatType?: 'private' | 'group';
   setChatType?: React.Dispatch<React.SetStateAction<'private' | 'group'>>;
 };
@@ -24,7 +24,7 @@ const ChatModal = ({
   useClickOutside(modalRef, onClose);
 
   const modalSize = 'h-[560px] w-[360px]';
-  const modalClass = `fixed bottom-10 right-10 z-40 flex flex-col justify-between rounded-3xl bg-main-medium p-5 shadow-xl transition-all duration-300 ease-out ${modalSize}`;
+  const modalClass = `fixed bottom-10 right-10 z-30 flex flex-col justify-between rounded-3xl bg-main-medium p-5 shadow-xl transition-all duration-300 ease-out ${modalSize}`;
   const tabClass =
     'mr-0.5 rounded-t-xl border border-b-0 border-main-base px-3 py-1';
 
@@ -54,9 +54,13 @@ const ChatModal = ({
           ))}
         </div>
       ) : (
-        <p className="text-main-soft text-center text-sm">채팅 내역이 없어요</p>
+        <>
+          <p className="text-main-soft text-center text-sm">
+            채팅 내역이 없어요
+          </p>
+          <Button>채팅 시작하기</Button>
+        </>
       )}
-      <Button>채팅 시작하기</Button>
     </div>
   );
 };
