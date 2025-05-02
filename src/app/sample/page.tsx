@@ -5,21 +5,14 @@ import FloatingButton from '@/components/common/button/FloatingButton';
 import ChatRooms from '@/components/chats/ChatRooms';
 import Modal from '@/components/common/modal/Modal';
 import ChatMessage from '@/components/chats/ChatMessage';
-import Menu from '@/components/layouts/Menu';
 
 export default function HomePage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [isAlarm] = useState(false);
   const [chatType, setChatType] = useState<'private' | 'group'>('private');
 
   return (
     <main className="p-6">
-      {isMenuOpen && (
-        <Modal variation="menu" onClose={() => setIsMenuOpen(false)}>
-          <Menu />
-        </Modal>
-      )}
       {isChatOpen ? (
         <Modal onClose={() => setIsChatOpen(false)}>
           {/* <ChatRooms
