@@ -8,4 +8,5 @@ export interface moimCard {
   latitude: number;
   longitude: number;
   max_people: number;
+  img_url?: string;
 }
