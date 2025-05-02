@@ -63,11 +63,11 @@ export default function SchedulePage() {
       </div>
 
       {/* 메인 컨텐츠 */}
-      <main className="flex-1 p-12">
-        <h1 className="mb-12 text-4xl font-bold">일정 관리</h1>
-        
-        <div className="rounded-2xl border bg-white p-8 shadow-lg">
-          <div className="flex gap-12">
+      <main className="flex-1 p-8">
+        <h1 className="mb-8 text-3xl font-bold">일정 관리</h1>
+
+        <div className="rounded-2xl border bg-white p-6 shadow-lg">
+          <div className="flex gap-8">
             {/* 달력 */}
             <div className="flex-1">
               <Calendar
@@ -80,54 +80,54 @@ export default function SchedulePage() {
                   return schedules[dateKey]?.length ? 'has-schedule' : null;
                 }}
               />
-              <div className="mt-6 flex items-center gap-6">
+              <div className="mt-4 flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="h-5 w-5 rounded bg-[#E1F0D3]"></div>
-                  <span className="text-base text-gray-600">
+                  <div className="h-4 w-4 rounded bg-[#E1F0D3]"></div>
+                  <span className="text-sm text-gray-600">
                     내가 생성한 그룹 일정
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="h-5 w-5 rounded bg-[#F6FBEF]"></div>
-                  <span className="text-base text-gray-600">다른 그룹 일정</span>
+                  <div className="h-4 w-4 rounded bg-[#F6FBEF]"></div>
+                  <span className="text-sm text-gray-600">다른 그룹 일정</span>
                 </div>
               </div>
             </div>
 
             {/* 일정 목록 */}
             {date && (
-              <div className="w-[500px]">
-                <h2 className="mb-6 text-2xl font-semibold">
+              <div className="w-96">
+                <h2 className="mb-4 text-xl font-semibold">
                   {format(
                     date instanceof Date ? date : date[0]!,
                     'yyyy년 MM월 dd일',
                     { locale: ko },
                   )}
                 </h2>
-                <div className="mb-6">
+                <div className="mb-4">
                   <input
                     type="text"
                     value={newSchedule}
                     onChange={e => setNewSchedule(e.target.value)}
                     placeholder="새로운 일정을 입력하세요"
-                    className="w-full rounded-lg border border-gray-300 p-3 text-lg"
+                    className="w-full rounded-lg border border-gray-300 p-2"
                   />
                   <button
                     onClick={handleAddSchedule}
-                    className="mt-3 w-full rounded-lg bg-[#4CAF50] px-6 py-3 text-lg text-white hover:bg-[#45a049]"
+                    className="mt-2 w-full rounded-lg bg-[#4CAF50] px-4 py-2 text-white hover:bg-[#45a049]"
                   >
                     일정 추가
                   </button>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {schedules[
                     format(date instanceof Date ? date : date[0]!, 'yyyy-MM-dd')
                   ]?.map((schedule, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between rounded-lg border bg-[#F6FBEF] p-4"
+                      className="flex items-center justify-between rounded-lg border bg-[#F6FBEF] p-3"
                     >
-                      <span className="text-lg">{schedule}</span>
+                      <span>{schedule}</span>
                       <button
                         onClick={() =>
                           handleDeleteSchedule(
@@ -138,7 +138,7 @@ export default function SchedulePage() {
                             index,
                           )
                         }
-                        className="text-lg text-red-500 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700"
                       >
                         삭제
                       </button>
@@ -155,12 +155,13 @@ export default function SchedulePage() {
         .react-calendar {
           background-color: transparent;
           border: none;
+          font-family: 'Pretendard', sans-serif;
+          font-size: 1.2em;
         }
         .react-calendar__tile {
-          padding: 1.5em 0.5em;
+          padding: 1em 0.5em;
           position: relative;
-          height: 80px;
-          font-size: 1.2em;
+          height: 70px;
         }
         .react-calendar__tile--now {
           background: #f6fbef;
@@ -171,11 +172,11 @@ export default function SchedulePage() {
         .react-calendar__tile.has-schedule::after {
           content: '';
           position: absolute;
-          bottom: 12px;
+          bottom: 8px;
           left: 50%;
           transform: translateX(-50%);
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           background-color: #4caf50;
         }
@@ -186,7 +187,6 @@ export default function SchedulePage() {
         .react-calendar__month-view__weekdays {
           font-weight: bold;
           text-transform: uppercase;
-          font-size: 1.1em;
         }
         .react-calendar__month-view__days__day--weekend {
           color: #d10000;
