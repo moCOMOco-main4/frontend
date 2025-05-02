@@ -1,7 +1,7 @@
 'use client';
 
 import Modal from '@/components/common/modal/Modal';
-import MenuModal from '@/components/layouts/Menu';
+import MenuModal from '@/components/common/modal/MenuModal';
 import { HEADER_NAV_LIST } from '@/constants/config';
 import Banner from '@images/Banner.png';
 import { Menu } from 'lucide-react';
