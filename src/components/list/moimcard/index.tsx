@@ -30,7 +30,7 @@ export const MoimCard = ({ data }: ListProps) => {
                 <div className="absolute left-2 right-2 top-2 z-10 flex items-center justify-between px-2">
                   <Button
                     size="sm"
-                    className="w-20 min-w-16"
+                    className="pointer-events-none w-20 min-w-16"
                     color={statusColor}
                   >
                     {statusText}
