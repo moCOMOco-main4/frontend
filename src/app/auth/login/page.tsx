@@ -20,6 +20,7 @@ export default function Login() {
 
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   const naverURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${STATE}`;
+  console.log('[KAKAO LOGIN URL]', kakaoURL);
 
   // [ kakaoURL ] : 브라우저 URL이 kakaoURL로 이동
   const kakaoLoginHandler = () => {
