@@ -17,7 +17,7 @@ const MyMoimCard = ({ moim }: MoimProps) => {
   const isWishlist = pathname.startsWith('/mypage/wishlist');
 
   return (
-    <div className="flex min-w-[450px] items-center justify-between rounded-xl border border-main-base bg-[#FFFCFC] p-3">
+    <div className="flex w-full items-center justify-between rounded-xl border border-main-base bg-[#FFFCFC] p-3">
       <div className="flex items-center gap-2">
         <span className="w-16">
           {moim.is_closed ? (
@@ -30,14 +30,16 @@ const MyMoimCard = ({ moim }: MoimProps) => {
         </span>
         <Image src={Logo} className="size-10 rounded-xl" alt="유저 이미지" />
         <div>
-          <p className="font-semibold text-main-header">{moim.title}</p>
+          <p className="line-clamp-1 font-semibold text-main-header">
+            {moim.title}
+          </p>
           <p className="line-clamp-1 text-sm text-gray-500">
             content api 명세서에 엄슴
           </p>
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <span className="flex items-center gap-1 text-main-header">
+        <span className="flex items-center gap-1 text-gray-500">
           <Users size={20} />
           <span className="text-sm">4/5</span>
         </span>
