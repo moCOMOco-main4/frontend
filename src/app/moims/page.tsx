@@ -9,7 +9,7 @@ const MoimList = () => {
     <div className="flex flex-col gap-2 px-20">
       <div className="flex items-center justify-between">
         <p className="pb-2 text-sm">전체 12개</p>
-        <Button size="sm" className="w-12">
+        <Button size="sm" className="w-14">
           작성
         </Button>
       </div>

@@ -1,16 +1,17 @@
 import { HeartIcon, MessageCircle, Plus, StarIcon } from 'lucide-react';
 
 export const btnSizeMap = {
-  sm: 'h-8 text-sm',
-  md: 'h-10',
-  lg: 'h-12 text-lg',
+  xs: 'py-1 px-2 text-xs',
+  sm: 'py-1 px-3 text-sm',
+  md: 'py-2 px-3',
+  lg: 'py-2 px-3 text-lg',
 } as const;
 
 export const btnColorMap = {
   green: 'bg-green-default text-white hover:bg-green-hover',
   red: 'bg-red-default text-white hover:bg-red-hover',
   dark: 'bg-main-header text-white',
-  outline: 'border border-black text-black',
+  outline: 'border border-black text-black hover:bg-gray-100',
 } as const;
 
 export const iconMap = {
