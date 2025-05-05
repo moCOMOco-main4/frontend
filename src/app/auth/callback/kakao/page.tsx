@@ -12,7 +12,7 @@ export default function KakaoCallback() {
     const handleKakaoLogin = async (code: string) => {
       try {
         const response = await fetch(
-          'http://localhost:8000/accounts/kakao/callback/',
+          'https://www.mocomoco.store/auth/callback/kakao',
           {
             method: 'POST',
             headers: {

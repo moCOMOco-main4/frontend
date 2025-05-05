@@ -7,8 +7,7 @@ import kakao from '@images/kakao.png';
 export default function Login() {
   // kakao
   const CLIENT_ID = process.env.NEXT_PUBLIC_REST_API_KEY;
-  const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
-
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   // naver
   const NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
   const NAVER_REDIRECT_URI = process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI;
@@ -18,7 +17,11 @@ export default function Login() {
   // console.log('KAKAO REDIRECT:', process.env.NEXT_PUBLIC_REDIRECT_URI);
   // console.log('NAVER REDIRECT:', process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI);
 
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const kakaoURL =
+    `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}` +
+    `&redirect_uri=${REDIRECT_URI}` +
+    `&response_type=code` +
+    `&scope=profile_nickname`;
   const naverURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${STATE}`;
 
   // [ kakaoURL ] : 브라우저 URL이 kakaoURL로 이동
