@@ -1,15 +1,15 @@
 'use client';
 
-import { Moim } from '@/types/moim';
 import Image from 'next/image';
 import Logo from '@images/Logo.png';
 import FavoriteButton from '@/components/common/button/FavoriteButton';
 import { Users } from 'lucide-react';
 import Button from '@/components/common/button/Button';
 import { usePathname } from 'next/navigation';
+import { moimCard } from '@/components/list/moimcard/types';
 
 type MoimProps = {
-  moim: Moim;
+  moim: moimCard;
 };
 
 const MyMoimCard = ({ moim }: MoimProps) => {
@@ -33,13 +33,13 @@ const MyMoimCard = ({ moim }: MoimProps) => {
       <div className="flex-1 cursor-pointer truncate">
         <p className="font-semibold text-main-header">{moim.title}</p>
         <p className="text-sm text-gray-500">
-          sdfsdfsdfsdfsdeㅇㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴddddㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ
+          content 추가 필요합니다 api 명세에
         </p>
       </div>
       <div className="flex items-center gap-3">
         <span className="flex items-center gap-1 text-gray-500">
           <Users size={20} />
-          <span className="text-sm">4/5</span>
+          <span className="text-sm">1/{moim.max_people}</span>
         </span>
         {isWishlist ? (
           <FavoriteButton type={'star'} color="#A0B092" />
