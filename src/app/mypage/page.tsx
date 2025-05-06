@@ -5,12 +5,37 @@ import stack_react from '@images/stack_React.png';
 import stack_next from '@images/stack_Next.png';
 import stack_git from '@images/stack_git.png';
 import Logo from '@images/Logo.png';
+import userProfile from '@/mockup/user.json';
 
-export default function Mypage() {
+type UserProfile = {
+  id: number;
+  email: string;
+  name: string;
+  nickname: string;
+  phone: string;
+  birthday: string;
+  gender: 'male' | 'female';
+  address: string;
+  intro: string;
+  github_url: string;
+  portfolio_url: string;
+};
+
+async function getUserProfile(): Promise<UserProfile> {
+  const response = await fetch('http://localhost:3000/api/mypage');
+  if (!response.ok) {
+    throw new Error('Failed to fetch user profile');
+  }
+  return response.json();
+}
+
+export default async function Mypage() {
+  // const userProfile = await getUserProfile();
+
   return (
     <div aria-label="마이페이지" className="h-full">
       {/* 마이페이지 카드 */}
-      <div className="mt-[5%] flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <section
           className="flex min-h-[500px] min-w-[700px] flex-col items-center rounded-2xl bg-[#E1F0D3] p-12 shadow-sm"
           aria-label="사용자 정보"
@@ -19,7 +44,7 @@ export default function Mypage() {
             수정
           </button>
           <h2 className="mb-6 text-2xl font-semibold" aria-level={2}>
-            USER NAME 님의정보
+            {userProfile.nickname} 님의 정보
           </h2>
           <Image
             src={Logo}
@@ -31,7 +56,7 @@ export default function Mypage() {
             aria-label="프로필 이미지"
           />
           <div className="mb-2 text-xl" role="text" aria-label="사용자 이름">
-            USER NAME
+            {userProfile.name}
           </div>
           {/* 탭 */}
           <div className="mb-6 flex w-full justify-start gap-2">
@@ -58,7 +83,7 @@ export default function Mypage() {
                 role="text"
                 aria-label="자기소개 내용"
               >
-                반갑습니다!
+                {userProfile.intro}
               </div>
             </div>
             {/* 스택 및 링크 */}
@@ -125,11 +150,19 @@ export default function Mypage() {
                 </div>
                 <input
                   type="text"
-                  value="https://github.com/"
+                  value={userProfile.github_url}
                   readOnly
                   className="w-full rounded-md border bg-white p-1"
                   role="textbox"
                   aria-label="GitHub 링크"
+                />
+                <input
+                  type="text"
+                  value={userProfile.portfolio_url}
+                  readOnly
+                  className="mt-2 w-full rounded-md border bg-white p-1"
+                  role="textbox"
+                  aria-label="포트폴리오 링크"
                 />
               </div>
             </div>
