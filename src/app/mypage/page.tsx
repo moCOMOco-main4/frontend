@@ -5,6 +5,7 @@ import stack_react from '@images/stack_React.png';
 import stack_next from '@images/stack_Next.png';
 import stack_git from '@images/stack_git.png';
 import Logo from '@images/Logo.png';
+import userProfile from '@/mockup/user.json';
 
 type UserProfile = {
   id: number;
@@ -29,7 +30,7 @@ async function getUserProfile(): Promise<UserProfile> {
 }
 
 export default async function Mypage() {
-  const userProfile = await getUserProfile();
+  // const userProfile = await getUserProfile();
 
   return (
     <div aria-label="마이페이지" className="h-full">
