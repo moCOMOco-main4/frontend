@@ -28,16 +28,21 @@ const Header = () => {
                   size={35}
                   color="#a0b092"
                   onClick={() => setIsNotiOpen(true)}
+                  className="cursor-pointer"
                 />
               </li>
               <li>
                 <Link href="/mypage">
-                  <CircleUserRound size={35} color="#a0b092" />
+                  <CircleUserRound
+                    size={35}
+                    color="#a0b092"
+                    className="cursor-pointer"
+                  />
                 </Link>
               </li>
               <li>
                 <Menu
-                  className="ml-1"
+                  className="ml-1 cursor-pointer"
                   size={35}
                   color="#a0b092"
                   onClick={() => setIsMenuOpen(true)}
@@ -53,7 +58,7 @@ const Header = () => {
       </nav>
       {isMenuOpen && (
         <Modal variation="menu" onClose={() => setIsMenuOpen(false)}>
-          <Menus />
+          <Menus onClose={() => setIsMenuOpen(false)} />
         </Modal>
       )}
       {isNotiOpen && (
