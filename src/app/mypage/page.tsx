@@ -5,6 +5,7 @@ import stack_react from '@images/stack_React.png';
 import stack_next from '@images/stack_Next.png';
 import stack_git from '@images/stack_git.png';
 import Logo from '@images/Logo.png';
+import Link from 'next/link';
 
 type UserProfile = {
   id: number;
@@ -21,11 +22,9 @@ type UserProfile = {
 };
 
 async function getUserProfile(): Promise<UserProfile> {
-  const response = await fetch('http://localhost:3000/api/mypage');
-  if (!response.ok) {
-    throw new Error('Failed to fetch user profile');
-  }
-  return response.json();
+  const response = await fetch('https://api.mocomoco.store/api/auth/user/');
+  const data: UserProfile = await response.json();
+  return data;
 }
 
 export default async function Mypage() {
@@ -36,12 +35,14 @@ export default async function Mypage() {
       {/* 마이페이지 카드 */}
       <div className="mt-[5%] flex items-center justify-center">
         <section
-          className="flex min-h-[500px] min-w-[700px] flex-col items-center rounded-2xl bg-[#E1F0D3] p-12 shadow-sm"
+          className="relative flex min-h-[500px] min-w-[700px] flex-col items-center rounded-2xl bg-[#E1F0D3] p-12 shadow-sm"
           aria-label="사용자 정보"
         >
-          <button className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
-            수정
-          </button>
+          <Link href="/mypage/edit">
+            <button className="absolute right-4 top-4 text-sm text-gray-500 hover:text-gray-700">
+              수정
+            </button>
+          </Link>
           <h2 className="mb-6 text-2xl font-semibold" aria-level={2}>
             {userProfile.nickname} 님의 정보
           </h2>
@@ -57,6 +58,7 @@ export default async function Mypage() {
           <div className="mb-2 text-xl" role="text" aria-label="사용자 이름">
             {userProfile.name}
           </div>
+
           {/* 탭 */}
           <div className="mb-6 flex w-full justify-start gap-2">
             <div className="rounded-lg border bg-white px-4 py-1 font-medium">
@@ -66,6 +68,7 @@ export default async function Mypage() {
               디자이너
             </div>
           </div>
+
           {/* 정보 카드 */}
           <div className="flex w-full justify-between gap-6">
             {/* 자기소개 */}
@@ -85,6 +88,7 @@ export default async function Mypage() {
                 {userProfile.intro}
               </div>
             </div>
+
             {/* 스택 및 링크 */}
             <div
               className="flex flex-col gap-3 rounded-[20px] border bg-[#F6FBEF]"
@@ -143,6 +147,7 @@ export default async function Mypage() {
                   </li>
                 </nav>
               </div>
+
               <div className="min-w-[220px] rounded-lg p-4">
                 <div className="mb-2" role="heading" aria-level={3}>
                   링크
