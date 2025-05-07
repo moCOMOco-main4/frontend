@@ -7,7 +7,7 @@ import Logo from '@images/Logo.png';
 import Edit from '@images/edit.png';
 import Dropdown from '@/components/common/input/Dropdown';
 import Button from '@/components/common/button/Button';
-import { CATEGORY_LIST } from '@/constants/config';
+import { ROLE_LIST } from '@/constants/config';
 
 export default function EditForm() {
   const [nickname, setNickname] = useState('');
@@ -71,7 +71,7 @@ export default function EditForm() {
             <Dropdown
               selected={category}
               onSelect={setCategory}
-              categories={[...CATEGORY_LIST]}
+              categories={[...ROLE_LIST]}
               placeholder="분야"
               className="text-sm md:text-lg"
             />
