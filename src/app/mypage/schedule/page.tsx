@@ -36,44 +36,37 @@ export default function SchedulePage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F7FFE6]">
+    <MyMoimBox title="일정 관리">
       {/* 메인 컨텐츠 */}
-      <main className="flex-1 p-8">
-        <h1 className="mb-8 text-3xl font-bold">일정 관리</h1>
-        <MyMoimBox>
-          <div className="rounded-2xl border bg-white p-6 shadow-lg">
-            <div className="flex gap-8">
-              {/* 달력 */}
-              <div className="flex-1">
-                <Calendar
-                  onChange={setDate}
-                  value={date}
-                  locale="ko-KR"
-                  className="!w-full !border-none"
-                  tileClassName={({ date }) => {
-                    const dateKey = format(date, 'yyyy-MM-dd');
-                    return schedules[dateKey]?.length ? 'has-schedule' : null;
-                  }}
-                />
-                <div className="mt-4 flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 rounded bg-[#E1F0D3]"></div>
-                    <span className="text-sm text-gray-600">
-                      내가 생성한 그룹 일정
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 rounded bg-[#F6FBEF]"></div>
-                    <span className="text-sm text-gray-600">
-                      다른 그룹 일정
-                    </span>
-                  </div>
-                </div>
+      <div className="rounded-2xl border bg-white p-6 shadow-lg">
+        <div className="flex gap-8">
+          {/* 달력 */}
+          <div className="flex-1">
+            <Calendar
+              onChange={setDate}
+              value={date}
+              locale="ko-KR"
+              className="!w-full !border-none"
+              tileClassName={({ date }) => {
+                const dateKey = format(date, 'yyyy-MM-dd');
+                return schedules[dateKey]?.length ? 'has-schedule' : null;
+              }}
+            />
+            <div className="mt-4 flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 rounded bg-[#E1F0D3]"></div>
+                <span className="text-sm text-gray-600">
+                  내가 생성한 그룹 일정
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 rounded bg-[#F6FBEF]"></div>
+                <span className="text-sm text-gray-600">다른 그룹 일정</span>
               </div>
             </div>
           </div>
-        </MyMoimBox>
-      </main>
-    </div>
+        </div>
+      </div>
+    </MyMoimBox>
   );
 }
