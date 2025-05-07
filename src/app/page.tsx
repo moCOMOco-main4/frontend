@@ -5,10 +5,10 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex w-full max-w-5xl flex-col justify-around md:flex-row">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8">
+      <div className="flex flex-col gap-10 md:flex-row">
         <Image src={Logo} width={400} alt="로고" className="m-auto" />
-        <section className="flex flex-col gap-5 p-4">
+        <section className="flex flex-col gap-7 p-4">
           <h1 className="text-4xl font-bold leading-snug">
             모각코할 사람, 여기 다 모여라!
           </h1>
@@ -46,7 +46,7 @@ export default function Home() {
         </section>
       </div>
       <h2 className="my-2 text-3xl">함께 코딩하는 즐거움, 모코모코 🌱</h2>
-      <Link href="/moimlist">
+      <Link href="/moims">
         <Button className="bg-main-default" size="lg">
           코딩친구 만나러가기
         </Button>

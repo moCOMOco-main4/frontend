@@ -7,6 +7,7 @@ interface BaseProps {
   placeholder?: string;
   box?: InputType;
   value?: string;
+  className?: string;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
@@ -29,6 +30,7 @@ const CommonInput: React.FC<InputProps> = ({
   placeholder,
   value,
   onChange,
+  className = '',
   ...props
 }) => {
   return (
@@ -37,7 +39,7 @@ const CommonInput: React.FC<InputProps> = ({
 
       {box === 'textarea' ? (
         <textarea
-          className="min-h-[120px] w-full resize-none rounded-xl border border-main-base bg-transparent p-3 text-[15px] shadow-sm transition focus:outline-none"
+          className={`min-h-[120px] w-full resize-none rounded-xl border border-main-base p-3 text-[15px] shadow-sm transition focus:outline-none ${className}`}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -47,8 +49,8 @@ const CommonInput: React.FC<InputProps> = ({
         <input
           className={`w-full ${
             box === 'box'
-              ? 'rounded-xl border border-main-base p-3 text-[15px] shadow-sm transition focus:outline-none'
-              : 'border-b border-main-base bg-transparent text-[15px] transition-all focus:outline-none'
+              ? ` ${className} rounded-xl border border-main-base p-3 text-[15px] shadow-sm transition focus:outline-none`
+              : `border-b border-main-base bg-transparent text-[15px] transition-all focus:outline-none ${className}`
           }`}
           type="text"
           placeholder={placeholder}
