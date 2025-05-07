@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface User {
   id: number;
@@ -22,29 +23,36 @@ interface UserState {
 
 // create()	상태 스토어를 생성하는 함수
 // set()	상태를 변경하는 함수
-export const useAuthStore = create<UserState>(set => ({
-  // [ 초기 값 ]
-  accessToken: null,
-  refreshToken: null,
-  user: null,
-  isLoggedIn: false,
-
-  setAuth: (accessToken, refreshToken, user) =>
-    set({
-      accessToken,
-      refreshToken,
-      user,
-      isLoggedIn: true,
-    }),
-
-  logout: () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    set({
+export const useAuthStore = create<UserState>()(
+  persist(
+    set => ({
+      // [ 초기 값 ]
       accessToken: null,
       refreshToken: null,
       user: null,
       isLoggedIn: false,
-    });
-  },
-}));
+
+      setAuth: (accessToken, refreshToken, user) =>
+        set({
+          accessToken,
+          refreshToken,
+          user,
+          isLoggedIn: true,
+        }),
+
+      logout: () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        set({
+          accessToken: null,
+          refreshToken: null,
+          user: null,
+          isLoggedIn: false,
+        });
+      },
+    }),
+    {
+      name: 'auth-storage', // localStorage에 저장될 key 이름
+    },
+  ),
+);

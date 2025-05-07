@@ -6,13 +6,35 @@ import Banner from '@images/Banner.png';
 import { Bell, CircleUserRound, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Notifications from '@/components/notifications/Notifications';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const Header = () => {
-  const [token] = useState(true);
+  // const [hydrated, setHydrated] = useState(false);
+
+  // useEffect(() => {
+  //   setHydrated(true); // 클라이언트에서만 실행됨
+  // }, []);
+
+  const router = useRouter();
+  const isLoggedIn = useAuthStore(state => state.isLoggedIn);
+  const logout = useAuthStore(state => state.logout);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotiOpen, setIsNotiOpen] = useState(false);
+
+  console.log('isLoggedIn:', isLoggedIn);
+  console.log('user:', useAuthStore.getState().user);
+
+  // if (!hydrated) return null; // hydration 완료 전에는 아무것도 렌더링하지 않음
+
+  console.log('렌더링');
+
+  if (isLoggedIn) {
+    console.log('로 그 인..');
+  }
 
   return (
     <header className="sticky top-0 z-30 flex h-[80px] w-full justify-between bg-main-light py-4">
@@ -21,8 +43,20 @@ const Header = () => {
       </Link>
       <nav className="font-bold text-main-header">
         <ul className="flex items-center justify-between gap-5">
-          {token ? (
+          {isLoggedIn ? (
             <>
+              <li>
+                <Link href="/">
+                  <div
+                    onClick={() => {
+                      logout();
+                    }}
+                    className="font-bold hover:underline"
+                  >
+                    로그아웃
+                  </div>
+                </Link>
+              </li>
               <li>
                 <Bell
                   size={35}

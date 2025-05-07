@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 export default function KakaoCallback() {
   // useRouter : 페이지 이동
   const router = useRouter();
+  const { setAuth } = useAuthStore();
 
   useEffect(() => {
     const handleKakaoLogin = async (code: string) => {
@@ -34,17 +35,15 @@ export default function KakaoCallback() {
         if (data.access && data.refresh && data.user) {
           localStorage.setItem('access_token', data.access);
           localStorage.setItem('refresh_token', data.refresh);
-          useAuthStore.getState().setAuth(data.access, data.refresh, data.user);
+
+          setAuth(data.access, data.refresh, data.user);
         }
 
-        // 유저 상태에 따라 분기 처리 : Record< 키, 값 > 타입 지정
-        const routeMap: Record<string, string> = {
-          false: '/',
-          true: '/users/me',
-        };
-
-        // data.isNewUser 이 값은 boolean 값이지만, 위에 string으로 타입 정의 해주었기 떄문에 통일
-        router.push(routeMap[String(data.isNewUser)]);
+        if (data.isNewUser) {
+          router.push('/users/me');
+        } else {
+          router.push('/');
+        }
       } catch (error) {
         console.error(error);
         alert('로그인 실패. 다시 시도해주세요.');
