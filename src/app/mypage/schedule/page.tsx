@@ -70,63 +70,6 @@ export default function SchedulePage() {
                   </div>
                 </div>
               </div>
-
-              {/* 일정 목록 */}
-              {date && (
-                <div className="w-96">
-                  <h2 className="mb-4 text-xl font-semibold">
-                    {format(
-                      date instanceof Date ? date : date[0]!,
-                      'yyyy년 MM월 dd일',
-                      { locale: ko },
-                    )}
-                  </h2>
-                  <div className="mb-4">
-                    <input
-                      type="text"
-                      value={newSchedule}
-                      onChange={e => setNewSchedule(e.target.value)}
-                      placeholder="새로운 일정을 입력하세요"
-                      className="w-full rounded-lg border border-gray-300 p-2"
-                    />
-                    <button
-                      onClick={handleAddSchedule}
-                      className="mt-2 w-full rounded-lg bg-[#4CAF50] px-4 py-2 text-white hover:bg-[#45a049]"
-                    >
-                      일정 추가
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    {schedules[
-                      format(
-                        date instanceof Date ? date : date[0]!,
-                        'yyyy-MM-dd',
-                      )
-                    ]?.map((schedule, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between rounded-lg border bg-[#F6FBEF] p-3"
-                      >
-                        <span>{schedule}</span>
-                        <button
-                          onClick={() =>
-                            handleDeleteSchedule(
-                              format(
-                                date instanceof Date ? date : date[0]!,
-                                'yyyy-MM-dd',
-                              ),
-                              index,
-                            )
-                          }
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </MyMoimBox>
