@@ -7,6 +7,7 @@ import { Users } from 'lucide-react';
 import Button from '@/components/common/button/Button';
 import { usePathname } from 'next/navigation';
 import { moimCard } from '@/components/moim/moimcard/types';
+import { useRouter } from 'next/navigation';
 
 type MoimProps = {
   moim: moimCard;
@@ -15,6 +16,7 @@ type MoimProps = {
 
 const MyMoimCard = ({ moim, setIsConfirmOpen }: MoimProps) => {
   const pathname = usePathname();
+  const router = useRouter();
   const isWishlist = pathname.startsWith('/mypage/wishlist');
 
   return (
@@ -31,7 +33,10 @@ const MyMoimCard = ({ moim, setIsConfirmOpen }: MoimProps) => {
         )}
       </span>
       <Image src={Logo} className="size-10 rounded-xl" alt="유저 이미지" />
-      <div className="flex-1 cursor-pointer truncate">
+      <div
+        className="flex-1 cursor-pointer truncate"
+        onClick={() => router.push(`/moims/${moim.id}`)}
+      >
         <p className="font-semibold text-main-header">{moim.title}</p>
         <p className="text-sm text-gray-500">
           content 추가 필요합니다 api 명세에
