@@ -3,7 +3,7 @@
 import Button from '@/components/common/button/Button';
 import CommonInput from '@/components/common/input/Input';
 import useClickOutside from '@/hooks/useClickOutside';
-import useModalStore from '@/store/useModalStore';
+import { useModalStore } from '@/store/useModalStore';
 import { useRef } from 'react';
 
 type ConfirmProps = {

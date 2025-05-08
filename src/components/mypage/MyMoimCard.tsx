@@ -8,7 +8,7 @@ import Button from '@/components/common/button/Button';
 import { usePathname } from 'next/navigation';
 import { moimCard } from '@/components/moim/moimcard/types';
 import { useRouter } from 'next/navigation';
-import useModalStore from '@/store/useModalStore';
+import { useModalStore } from '@/store/useModalStore';
 
 type MoimProps = {
   moim: moimCard;
