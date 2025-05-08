@@ -7,11 +7,9 @@ type ModalState = {
   close: () => void;
 };
 
-const useModalStore = create<ModalState>(set => ({
+export const useModalStore = create<ModalState>(set => ({
   isOpen: false,
   id: null,
   open: id => set({ isOpen: true, id }),
   close: () => set({ isOpen: false, id: null }),
 }));
-
-export default useModalStore;
