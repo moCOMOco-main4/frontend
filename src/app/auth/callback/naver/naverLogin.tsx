@@ -41,12 +41,11 @@ export default function NaverLogin() {
           setAuth(data.access, data.refresh, data.user);
         }
 
-        const routeMap: Record<string, string> = {
-          false: '/',
-          true: '/users/me',
-        };
-
-        router.push(routeMap[String(data.isNewUser)]);
+        if (data.isNewUser) {
+          router.push('/mypage/edit');
+        } else {
+          router.push('/');
+        }
       } catch (error) {
         console.error(error);
         alert('로그인 실패. 다시 시도해주세요.');

@@ -45,7 +45,7 @@ export default function KakaoLogin() {
         }
 
         if (data.isNewUser) {
-          router.push('/users/me');
+          router.push('/mypage/edit');
         } else {
           router.push('/');
         }
