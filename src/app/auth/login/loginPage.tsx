@@ -28,25 +28,31 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="flex h-screen w-full items-center justify-center">
-        <div className="flex w-[700px] flex-col items-center justify-center gap-[50px] rounded-[20px] bg-white p-[100px] drop-shadow-md">
-          <h1 className="text-[30px]"> 로그인 </h1>
-          <p className="text-[15px]">
+      <div className="flex h-screen w-full items-center justify-center px-6">
+        <div className="flex min-h-[300px] w-full max-w-[700px] flex-col items-center justify-center gap-8 rounded-2xl bg-white p-6 drop-shadow-md md:min-h-[500px]">
+          <h1 className="text-2xl font-semibold sm:text-3xl"> 로그인 </h1>
+          <p className="text-center text-sm sm:text-base">
             환영합니다 ! 로그인을 통해 모코모코를 시작해보세요 💚
           </p>
-          <div className="flex flex-col items-center justify-center">
-            <div className="cursor-pointer" onClick={kakaoLoginHandler}>
+          <div className="flex w-full flex-col items-center justify-center gap-4">
+            <div
+              className="w-full max-w-[400px] cursor-pointer"
+              onClick={kakaoLoginHandler}
+            >
               <Image
                 src={kakao}
                 alt="카카오 로그인"
-                className="h-[70px] w-[400px]"
+                className="h-auto w-full"
               />
             </div>
-            <div className="cursor-pointer" onClick={naverLoginHandler}>
+            <div
+              className="w-full max-w-[400px] cursor-pointer"
+              onClick={naverLoginHandler}
+            >
               <Image
                 src={naver}
                 alt="네이버 로그인"
-                className="h-[70px] w-[400px]"
+                className="h-auto w-full"
               />
             </div>
           </div>
