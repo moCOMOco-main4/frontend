@@ -12,29 +12,20 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
 
 const Header = () => {
-  // const [hydrated, setHydrated] = useState(false);
-
-  // useEffect(() => {
-  //   setHydrated(true); // 클라이언트에서만 실행됨
-  // }, []);
-
   const router = useRouter();
+
+  const user = useAuthStore(state => state.user);
   const isLoggedIn = useAuthStore(state => state.isLoggedIn);
   const logout = useAuthStore(state => state.logout);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotiOpen, setIsNotiOpen] = useState(false);
 
-  console.log('isLoggedIn:', isLoggedIn);
-  console.log('user:', useAuthStore.getState().user);
-
-  // if (!hydrated) return null; // hydration 완료 전에는 아무것도 렌더링하지 않음
-
-  console.log('렌더링');
-
-  if (isLoggedIn) {
-    console.log('로 그 인..');
-  }
+  const handleLogout = () => {
+    logout();
+    alert('로그아웃이 완료되었습니다.');
+    router.push('/'); // 홈 또는 로그인 페이지로 이동
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-[80px] w-full justify-between bg-main-light py-4">
@@ -48,9 +39,7 @@ const Header = () => {
               <li>
                 <Link href="/">
                   <div
-                    onClick={() => {
-                      logout();
-                    }}
+                    onClick={() => handleLogout()}
                     className="font-bold hover:underline"
                   >
                     로그아웃

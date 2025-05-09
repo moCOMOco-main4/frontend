@@ -12,11 +12,11 @@ interface User {
 }
 
 interface UserState {
-  accessToken: string | null;
-  refreshToken: string | null;
+  access: string | null;
+  refresh: string | null;
   user: User | null;
   isLoggedIn: boolean;
-  setAuth: (accessToken: string, refreshToken: string, user: User) => void;
+  setAuth: (access: string, refresh: string, user: User) => void;
   // 따로 props 받아올 값 없이 호출만 하면 됨
   logout: () => void;
 }
@@ -27,15 +27,16 @@ export const useAuthStore = create<UserState>()(
   persist(
     set => ({
       // [ 초기 값 ]
-      accessToken: null,
-      refreshToken: null,
+      access: null,
+      refresh: null,
       user: null,
       isLoggedIn: false,
+      hydrated: false,
 
-      setAuth: (accessToken, refreshToken, user) =>
+      setAuth: (access, refresh, user) =>
         set({
-          accessToken,
-          refreshToken,
+          access,
+          refresh,
           user,
           isLoggedIn: true,
         }),
@@ -44,8 +45,8 @@ export const useAuthStore = create<UserState>()(
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         set({
-          accessToken: null,
-          refreshToken: null,
+          access: null,
+          refresh: null,
           user: null,
           isLoggedIn: false,
         });
