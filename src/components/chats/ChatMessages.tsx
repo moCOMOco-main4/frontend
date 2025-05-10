@@ -6,10 +6,10 @@ import { messages } from '@/mockup/messages';
 import { useChatStore } from '@/store/useChatStore';
 
 type MsgsProps = {
-  roomId: string;
+  room_id: string;
 };
 
-const ChatMessages = ({ roomId }: MsgsProps) => {
+const ChatMessages = ({ room_id }: MsgsProps) => {
   const currentUserId = 2;
 
   const { exitRoom } = useChatStore();
@@ -25,7 +25,7 @@ const ChatMessages = ({ roomId }: MsgsProps) => {
       <div className="flex-1 space-y-3 overflow-y-auto py-2">
         {messages.map(msg => (
           <ChatMessage
-            key={msg.messageId}
+            key={msg.ChatMessage_id}
             message={msg}
             currentUserId={currentUserId}
           />

@@ -33,8 +33,8 @@ const ChatRooms = () => {
         <div className="flex-1 space-y-1 overflow-y-auto scroll-smooth">
           {chatRoomList.map(room => (
             <button
-              key={room.roomId}
-              onClick={() => enterRoom(room.roomId)}
+              key={room.room_id}
+              onClick={() => enterRoom(room.room_id)}
               className="w-full text-start"
             >
               <ChatRoomCard chatRoom={room} />
