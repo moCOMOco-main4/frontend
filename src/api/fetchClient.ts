@@ -6,8 +6,6 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 interface FetchOptions extends RequestInit {
   isAuth?: boolean; //인증 필요 여부
-  access?: string | null;
-  refresh?: string | null;
   body?: any;
 }
 
