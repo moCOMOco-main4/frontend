@@ -22,7 +22,9 @@ const ClientLayout = () => {
 
   return (
     <>
-      {isConfirmOpen && <ConfirmModal />}
+      {isConfirmOpen && (
+        <ConfirmModal input={true} content="탈퇴 사유를 작성해주세요" />
+      )}
       {isChatOpen ? (
         <Modal onClose={closeModal}>
           {view === 'list' && <ChatRooms />}
