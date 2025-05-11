@@ -17,10 +17,9 @@ type MoimProps = {
 const MyMoimCard = ({ moim }: MoimProps) => {
   const pathname = usePathname();
   const router = useRouter();
-  const isWishlist = pathname.startsWith('/mypage/wishlist');
+  const isLikelist = pathname.startsWith('/mypage/likelist');
 
   const { open } = useModalStore();
-  const handleOpen = () => open(moim.id);
 
   return (
     <>
@@ -51,10 +50,10 @@ const MyMoimCard = ({ moim }: MoimProps) => {
             <Users size={20} />
             <span className="text-sm">1/{moim.max_people}</span>
           </span>
-          {isWishlist ? (
+          {isLikelist ? (
             <FavoriteButton type={'star'} color="#A0B092" />
           ) : (
-            <Button size="xs" color="dark" onClick={handleOpen}>
+            <Button size="xs" color="dark" onClick={() => open(moim.id)}>
               나가기
             </Button>
           )}

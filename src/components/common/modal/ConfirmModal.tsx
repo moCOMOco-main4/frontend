@@ -12,7 +12,7 @@ type ConfirmProps = {
   input?: boolean;
   confirmText?: string;
   cancelText?: string;
-  onConfirm?: () => void;
+  onConfirm?: (id: number) => void;
   className?: string;
 };
 
@@ -45,7 +45,12 @@ const ConfirmModal = ({
           <Button color="outline" onClick={close} className="w-1/2">
             {cancelText}
           </Button>
-          <Button onClick={onConfirm} className="w-1/2">
+          <Button
+            onClick={() => {
+              if (id !== null) onConfirm?.(id);
+            }}
+            className="w-1/2"
+          >
             {confirmText}
           </Button>
         </div>
