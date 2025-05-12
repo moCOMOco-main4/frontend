@@ -1,7 +1,6 @@
 'use client';
 import MyMoimBox from '@/components/mypage/MyMoimBox';
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
