@@ -2,17 +2,49 @@
 import MyMoimBox from '@/components/mypage/MyMoimBox';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../../styles/schedule.css';
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+type Schedule = {
+  post_id: number;
+  post_title: string;
+  date: string;
+  memo: string;
+  type: string;
+};
+
+type ScheduleMap = {
+  [key: string]: Schedule[];
+};
+
 export default function SchedulePage() {
   const [date, setDate] = useState<Value>(new Date());
-  const [schedules, setSchedules] = useState<{ [key: string]: string[] }>({});
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [newSchedule, setNewSchedule] = useState('');
+
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  async function fetchSchedules() {
+    try {
+      const response = await fetch('https://api.mocomoco.store/api/schedules/me/');
+      const data = await response.json();
+      setSchedules(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('일정을 불러오는데 실패했습니다:', error);
+      setSchedules([]);
+    }
+  }
+
+  const getSchedulesForDate = (date: Date) => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    return schedules.filter(schedule => schedule.date === dateStr);
+  };
 
   const handleAddSchedule = () => {
     if (!date || !newSchedule.trim()) return;
@@ -21,18 +53,25 @@ export default function SchedulePage() {
       date instanceof Date ? date : date[0]!,
       'yyyy-MM-dd',
     );
-    setSchedules(prev => ({
-      ...prev,
-      [dateKey]: [...(prev[dateKey] || []), newSchedule.trim()],
-    }));
+    
+    const newScheduleItem: Schedule = {
+      post_id: schedules.length + 1,
+      post_title: newSchedule.trim(),
+      date: dateKey,
+      memo: '',
+      type: 'personal'
+    };
+
+    setSchedules(prev => [...prev, newScheduleItem]);
     setNewSchedule('');
   };
 
   const handleDeleteSchedule = (dateKey: string, index: number) => {
-    setSchedules(prev => ({
-      ...prev,
-      [dateKey]: prev[dateKey].filter((_, i) => i !== index),
-    }));
+    setSchedules(prev => 
+      prev.filter((schedule, i) => 
+        !(schedule.date === dateKey && i === index)
+      )
+    );
   };
 
   return (
@@ -48,8 +87,8 @@ export default function SchedulePage() {
               locale="ko-KR"
               className="!w-full !border-none"
               tileClassName={({ date }) => {
-                const dateKey = format(date, 'yyyy-MM-dd');
-                return schedules[dateKey]?.length ? 'has-schedule' : null;
+                const dateSchedules = getSchedulesForDate(date);
+                return dateSchedules.length ? 'has-schedule' : null;
               }}
             />
             <div className="mt-4 flex items-center gap-4">
