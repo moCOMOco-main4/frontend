@@ -7,7 +7,6 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { chatOption } from '@/api/options/chatOption';
 import { useEffect, useRef, useState } from 'react';
-import { chatAPI } from '@/api/functions/chatAPI';
 
 type MsgsProps = {
   room_id: string;
@@ -15,11 +14,29 @@ type MsgsProps = {
 
 const ChatMessages = ({ room_id }: MsgsProps) => {
   const currentUserId = useAuthStore(state => state.user?.id!);
-  const { data: messages } = useQuery(chatOption.chatMessages(room_id));
-
   const { exitRoom } = useChatStore();
 
-  //맨 아래로 자동 스크롤
+  const { data: messages } = useQuery(chatOption.chatMessages(room_id));
+
+  const queryClient = useQueryClient();
+
+  const [inputValue, setInputValue] = useState('');
+  const postMessageMutation = useMutation(
+    chatOption.postMessage(room_id, queryClient),
+  );
+  const handleSend = () => {
+    if (inputValue.trim() === '') return;
+    postMessageMutation.mutate(inputValue);
+    setInputValue('');
+  };
+
+  const deleteMessageMutation = useMutation(
+    chatOption.deleteMessage(room_id, queryClient),
+  );
+  const handleDelete = (msgId: number) => {
+    deleteMessageMutation.mutate(msgId);
+  };
+
   const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = scrollRef.current;
@@ -27,46 +44,6 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
       el.scrollTop = el.scrollHeight;
     }
   }, [messages]);
-
-  //메시지 전송
-  const [inputValue, setInputValue] = useState('');
-
-  const queryClient = useQueryClient();
-  const postMessageMutation = useMutation({
-    mutationFn: (content: string) => chatAPI.postMessages(room_id, { content }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['chat', 'messages', room_id],
-      });
-      setInputValue('');
-    },
-    onError: error => {
-      console.error('전송 실패:', error);
-    },
-  });
-
-  const handleSend = () => {
-    if (inputValue.trim() === '') return;
-    postMessageMutation.mutate(inputValue);
-  };
-
-  //메시지 삭제
-  const deleteMessageMutation = useMutation({
-    mutationFn: (chatMessage_id: number) =>
-      chatAPI.deleteMessages(room_id, chatMessage_id),
-    onSuccess: (_, room_id) => {
-      queryClient.invalidateQueries({
-        queryKey: ['chat', 'messages', room_id],
-      });
-    },
-    onError: error => {
-      console.error('삭제 실패:', error);
-    },
-  });
-
-  const handleDelete = (msgId: number) => {
-    deleteMessageMutation.mutate(msgId);
-  };
 
   return (
     <div className="flex h-full flex-col p-1">
