@@ -40,6 +40,23 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     postMessageMutation.mutate(inputValue);
   };
 
+  const deleteMessageMutation = useMutation({
+    mutationFn: (chatMessage_id: number) =>
+      chatAPI.deleteMessages(room_id, chatMessage_id),
+    onSuccess: (_, room_id) => {
+      queryClient.invalidateQueries({
+        queryKey: ['chat', 'messages', room_id],
+      });
+    },
+    onError: error => {
+      console.error('삭제 실패:', error);
+    },
+  });
+
+  const handleDelete = (msgId: number) => {
+    deleteMessageMutation.mutate(msgId);
+  };
+
   return (
     <div className="flex h-full flex-col p-1">
       <div className="flex items-center border-b border-main-base py-3">
@@ -54,6 +71,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
             key={msg.ChatMessage_id}
             message={msg}
             currentUserId={currentUserId}
+            handleDelete={() => handleDelete(msg.ChatMessage_id)}
           />
         ))}
       </div>

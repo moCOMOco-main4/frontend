@@ -7,9 +7,10 @@ import Logo from '@images/Logo.png';
 type MsgProps = {
   message: Chats;
   currentUserId: number;
+  handleDelete: (id: number) => void;
 };
 
-const ChatMessage = ({ message, currentUserId }: MsgProps) => {
+const ChatMessage = ({ message, currentUserId, handleDelete }: MsgProps) => {
   const isMine = message.chat_user_id === currentUserId;
 
   return (
@@ -29,7 +30,9 @@ const ChatMessage = ({ message, currentUserId }: MsgProps) => {
             : 'rounded-bl-none border bg-white text-black'
         }`}
       >
-        <p>{message.content}</p>
+        <p onClick={() => handleDelete(message.ChatMessage_id)}>
+          {message.content}
+        </p>
       </div>
       <p className="ml-1 self-end text-[10px] text-gray-400">
         {new Date(message.created_at).toLocaleTimeString('ko-KR', {
