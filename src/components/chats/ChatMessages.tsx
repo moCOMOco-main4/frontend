@@ -6,7 +6,7 @@ import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { chatOption } from '@/api/options/chatOption';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { chatAPI } from '@/api/functions/chatAPI';
 
 type MsgsProps = {
@@ -19,6 +19,16 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
 
   const { exitRoom } = useChatStore();
 
+  //맨 아래로 자동 스크롤
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [messages]);
+
+  //메시지 전송
   const [inputValue, setInputValue] = useState('');
 
   const queryClient = useQueryClient();
@@ -40,6 +50,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     postMessageMutation.mutate(inputValue);
   };
 
+  //메시지 삭제
   const deleteMessageMutation = useMutation({
     mutationFn: (chatMessage_id: number) =>
       chatAPI.deleteMessages(room_id, chatMessage_id),
@@ -65,7 +76,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
         </button>
         <span className="ml-1 font-bold">채팅방명</span>
       </div>
-      <div className="flex-1 space-y-3 overflow-y-auto py-2">
+      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto py-2">
         {messages?.map(msg => (
           <ChatMessage
             key={msg.ChatMessage_id}
