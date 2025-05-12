@@ -17,14 +17,9 @@ type Schedule = {
   type: string;
 };
 
-type ScheduleMap = {
-  [key: string]: Schedule[];
-};
-
 export default function SchedulePage() {
   const [date, setDate] = useState<Value>(new Date());
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [newSchedule, setNewSchedule] = useState('');
 
   useEffect(() => {
     fetchSchedules();
@@ -32,7 +27,9 @@ export default function SchedulePage() {
 
   async function fetchSchedules() {
     try {
-      const response = await fetch('https://api.mocomoco.store/api/schedules/me/');
+      const response = await fetch(
+        'https://api.mocomoco.store/api/schedules/me/',
+      );
       const data = await response.json();
       setSchedules(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -44,34 +41,6 @@ export default function SchedulePage() {
   const getSchedulesForDate = (date: Date) => {
     const dateStr = format(date, 'yyyy-MM-dd');
     return schedules.filter(schedule => schedule.date === dateStr);
-  };
-
-  const handleAddSchedule = () => {
-    if (!date || !newSchedule.trim()) return;
-
-    const dateKey = format(
-      date instanceof Date ? date : date[0]!,
-      'yyyy-MM-dd',
-    );
-    
-    const newScheduleItem: Schedule = {
-      post_id: schedules.length + 1,
-      post_title: newSchedule.trim(),
-      date: dateKey,
-      memo: '',
-      type: 'personal'
-    };
-
-    setSchedules(prev => [...prev, newScheduleItem]);
-    setNewSchedule('');
-  };
-
-  const handleDeleteSchedule = (dateKey: string, index: number) => {
-    setSchedules(prev => 
-      prev.filter((schedule, i) => 
-        !(schedule.date === dateKey && i === index)
-      )
-    );
   };
 
   return (
