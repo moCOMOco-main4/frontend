@@ -39,9 +39,6 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     if (inputValue.trim() === '') return;
     postMessageMutation.mutate(inputValue);
   };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleSend();
-  };
 
   return (
     <div className="flex h-full flex-col p-1">
@@ -60,21 +57,24 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
           />
         ))}
       </div>
-      <div className="flex items-center justify-between gap-2 rounded-xl bg-white p-3">
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          handleSend();
+        }}
+        className="flex items-center justify-between gap-2 rounded-xl bg-white p-3"
+      >
         <input
           type="text"
+          value={inputValue}
           className="flex-1 border-none text-sm text-gray-700 outline-none"
           placeholder="메시지를 입력하세요."
           onChange={e => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
         />
-        <Send
-          stroke="gray"
-          size={20}
-          onClick={handleSend}
-          className="cursor-pointer"
-        />
-      </div>
+        <button type="submit">
+          <Send stroke="gray" size={20} className="cursor-pointer" />
+        </button>
+      </form>
     </div>
   );
 };
