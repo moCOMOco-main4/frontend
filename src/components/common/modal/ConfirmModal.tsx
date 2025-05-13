@@ -36,7 +36,7 @@ const ConfirmModal = ({
         ref={modalRef}
         className={`w-[320px] rounded-xl border border-main-medium bg-white p-4 ${className}`}
       >
-        <p className="mb-1 text-center text-lg">{id + title}</p>
+        <p className="mb-1 text-center text-lg">{title}</p>
         {content && (
           <p className="text-center text-sm text-gray-400">{content}</p>
         )}
