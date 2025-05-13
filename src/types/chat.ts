@@ -1,6 +1,6 @@
 export type ChatRoom = {
   room_id: string; //채팅방 id
-  room_title: string;
+  title: string;
   post_id: number; //게시글 id
   post_title: string; //게시글 명
   latest_message: string; //최근메시지
