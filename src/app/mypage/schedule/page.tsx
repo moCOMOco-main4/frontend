@@ -1,4 +1,3 @@
-'use client';
 import MyMoimBox from '@/components/mypage/MyMoimBox';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
