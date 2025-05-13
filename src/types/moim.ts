@@ -23,3 +23,12 @@ export interface Moim {
   is_liked: boolean;
   is_applied: boolean;
 }
+
+export interface MoimPayload {
+  title: string;
+  content: string;
+  moim: string;
+  place: string;
+  date: string;
+  roles: Record<string, number>;
+}
