@@ -1,9 +1,13 @@
+'use client';
+
 import MyMoimBox from '@/components/mypage/MyMoimBox';
 import { format } from 'date-fns';
 import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../../styles/schedule.css';
+import { useAuthStore } from '@/store/useAuthStore';
+
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
@@ -18,6 +22,7 @@ type Schedule = {
 export default function SchedulePage() {
   const [date, setDate] = useState<Value>(new Date());
   const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const { access } = useAuthStore();
 
   useEffect(() => {
     fetchSchedules();
@@ -27,6 +32,11 @@ export default function SchedulePage() {
     try {
       const response = await fetch(
         'https://api.mocomoco.store/api/schedules/me/',
+        {
+          headers: {
+            'Authorization': `Bearer ${access}`,
+          },
+        }
       );
       const data = await response.json();
       setSchedules(Array.isArray(data) ? data : []);
