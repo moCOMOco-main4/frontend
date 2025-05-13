@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const Notifications = () => {
   const { data } = useQuery(notificationOption.notiList());
-  const notiList = data ?? [];
+  const notiList = (data ?? []).filter(noti => !noti.is_read);
 
   const queryClient = useQueryClient();
   const patchReadMutation = useMutation(
