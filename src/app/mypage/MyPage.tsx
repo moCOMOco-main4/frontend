@@ -16,6 +16,7 @@ import { userAPI } from '@/api/functions/userAPI';
 import { Proportions } from 'lucide-react';
 
 type User = {
+  name: string;
   id: number;
   email: string;
   nickname: string;
@@ -38,6 +39,7 @@ export default function Mypage() {
       try {
         const data = await userAPI.getUser();
         setUser(data);
+        console.log(data);
       } catch (err) {
         console.error('유저 정보 가져오기 실패:', err);
       }
@@ -46,11 +48,9 @@ export default function Mypage() {
     fetchUser();
   }, [access]);
 
-  const fullImageUrl = user?.profile_image
-    ? `https://api.mocomoco.store${user?.profile_image}`
-    : Logo;
-
   console.log(user);
+
+  const fullImageUrl = user?.profile_image ? user?.profile_image : Logo;
 
   return (
     <MyMoimBox title={`${user?.nickname} 님의 정보`}>
@@ -173,7 +173,7 @@ export default function Mypage() {
             </p>
             {user?.github_url && (
               <div>
-                <p> [ GITHUB ] </p>
+                <p className="mb-[5px] text-[10px]"> [ GITHUB ] </p>
                 <p
                   className="mb-2 break-all rounded-xl border bg-white p-1"
                   aria-label="GitHub 링크"
@@ -185,7 +185,7 @@ export default function Mypage() {
 
             {user?.portfolio_url && (
               <div>
-                <p> [ Portfolio ] </p>
+                <p className="mb-[5px] text-[10px]"> [ Portfolio ] </p>
                 <p
                   className="break-all rounded-xl border bg-white p-1"
                   aria-label="포트폴리오 링크"
