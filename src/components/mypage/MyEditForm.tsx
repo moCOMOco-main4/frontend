@@ -76,6 +76,8 @@ export default function EditForm() {
       if (file) {
         const uploadedImageUrl = await uploadImage(file);
         profileImagePath = `https://api.mocomoco.store${encodeURI(uploadedImageUrl)}`;
+      } else if (!previewUrl && !file) {
+        profileImagePath = ''; // 삭제 처리
       }
 
       await userAPI.editUser({
@@ -103,16 +105,20 @@ export default function EditForm() {
     <>
       <div className="mb-[20px] flex min-h-screen w-full items-center justify-center px-4">
         <div className="flex w-full max-w-[700px] flex-col justify-center gap-[50px] rounded-[20px] bg-white p-[30px] drop-shadow-md sm:p-[50px]">
-          <p className="text-right text-sm underline md:text-base">회원탈퇴</p>
+          <p className="cursor-pointer text-right text-sm underline transition-all duration-200 ease-in-out hover:-translate-y-1 hover:text-red-500 md:text-base">
+            회원탈퇴
+          </p>
           <p className="text-center font-gmarket text-xl font-light md:text-[30px]">
             내정보 수정
           </p>
           <div className="flex items-center justify-center">
             <ProfileImageUploader
-              imageUrl={form.profile_image ? form.profile_image : null}
+              imageUrl={previewUrl ?? form.profile_image ?? null}
               onImageChange={(selectedFile, previewUrl) => {
-                setFile(selectedFile);
-                setPreviewUrl(previewUrl);
+                setFile(selectedFile ?? undefined);
+                if (!previewUrl) {
+                  updateField('profile_image', ''); // 서버에 삭제 요청
+                }
               }}
             />
           </div>

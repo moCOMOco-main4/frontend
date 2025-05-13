@@ -8,12 +8,10 @@ import stack_next from '@images/stack_Next.png';
 import stack_git from '@images/stack_git.png';
 import Logo from '@images/Logo.png';
 import Link from 'next/link';
-import user from '@/mockup/user.json';
 import MyMoimBox from '@/components/mypage/MyMoimBox';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { userAPI } from '@/api/functions/userAPI';
-import { Proportions } from 'lucide-react';
 
 type User = {
   name: string;
@@ -47,8 +45,6 @@ export default function Mypage() {
 
     fetchUser();
   }, [access]);
-
-  console.log(user);
 
   const fullImageUrl = user?.profile_image ? user?.profile_image : Logo;
 
