@@ -18,7 +18,11 @@ const ChatMessage = ({ message, currentUserId, handleDelete }: MsgProps) => {
     <div className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
       {!isMine && (
         <div className="mr-1 flex flex-col items-center">
-          <Image src={Logo} className="size-8 rounded-full" alt="유저 이미지" />
+          <Image
+            src={message.profile_image || Logo}
+            className="size-8 rounded-full"
+            alt="유저 이미지"
+          />
           <p className="text-xs font-semibold text-gray-500">
             {message.nickname}
           </p>

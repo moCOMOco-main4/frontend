@@ -20,7 +20,7 @@ const ChatRoomCard = ({ chatRoom }: ChatRoomProps) => {
           alt="채팅방 이미지"
         />
       }
-      titleSlot={chatRoom.post_title}
+      titleSlot={chatRoom.room_title}
       contentSlot={chatRoom.latest_message}
       timeSlot={chatRoom.latest_time}
     />

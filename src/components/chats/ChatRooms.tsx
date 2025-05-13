@@ -37,7 +37,7 @@ const ChatRooms = () => {
           {chatRooms.map(room => (
             <button
               key={room.room_id}
-              onClick={() => enterRoom(room.room_id)}
+              onClick={() => enterRoom(room.room_id, room.room_title)}
               className="w-full text-start"
             >
               <ChatRoomCard chatRoom={room} />

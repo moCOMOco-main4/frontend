@@ -14,7 +14,7 @@ type MsgsProps = {
 
 const ChatMessages = ({ room_id }: MsgsProps) => {
   const currentUserId = useAuthStore(state => state.user?.id!);
-  const { exitRoom } = useChatStore();
+  const { selectedRoomTitle, exitRoom } = useChatStore();
 
   const { data: messages } = useQuery(chatOption.chatMessages(room_id));
 
@@ -51,7 +51,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
         <button onClick={exitRoom}>
           <ChevronLeft stroke="gray" />
         </button>
-        <span className="ml-1 font-bold">채팅방명</span>
+        <span className="ml-1 font-bold">{selectedRoomTitle}</span>
       </div>
       <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto py-2">
         {messages?.map(msg => (
