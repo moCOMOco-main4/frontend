@@ -9,7 +9,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { userAPI } from '@/api/functions/userAPI';
 import { useRouter } from 'next/navigation';
 import { uploadImage } from '@/api/functions/uploadFileAPI';
-import useEditForm from '@/hooks/useEditForm';
+import useEditForm from '@/components/mypage/useEditForm';
 import ProfileImageUploader from './MyImgUpload';
 import { useDeleteAccount } from '@/hooks/useDeleteAccount';
 
