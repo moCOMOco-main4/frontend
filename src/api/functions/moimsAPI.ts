@@ -9,27 +9,30 @@ export const moimsApi = {
     });
   },
   getMoimsList: async () => {
-    return fetchClient(`/api/posts/`, 'GET', { isAuth: false });
+    return fetchClient(`/posts/`, 'GET', { isAuth: false });
   },
   getMoimDetail: async (id: Number) => {
-    return fetchClient(`/api/posts/${id}/`, 'GET', { isAuth: false });
+    return fetchClient(`/posts/${id}/`, 'GET', { isAuth: false });
   },
   deleteMoim: async (id: Number) => {
-    return fetchClient(`/api/posts/${id}/`, 'DELETE', { isAuth: true });
+    return fetchClient(`/posts/${id}/`, 'DELETE', { isAuth: true });
   },
   editMoim: async (id: Number, payload: MoimPayload) => {
-    return fetchClient(`/api/posts/${id}/`, 'PUT', {
+    return fetchClient(`/posts/${id}/`, 'PUT', {
       isAuth: true,
       body: payload,
     });
   },
   applyMoim: async (id: Number, role: string) => {
-    return fetchClient(`/api/posts/${id}/apply/`, 'POST', {
+    return fetchClient(`/posts/${id}/apply/`, 'POST', {
       isAuth: true,
       body: role,
     });
   },
   likeMoim: async (id: Number) => {
-    return fetchClient(`/api/posts/${id}/like/`, 'POST', { isAuth: true });
+    return fetchClient(`/posts/${id}/like/`, 'POST', { isAuth: true });
+  },
+  disLikeMoim: async (id: Number) => {
+    return fetchClient(`/posts/${id}/like/`, 'DELETE', { isAuth: true });
   },
 };
