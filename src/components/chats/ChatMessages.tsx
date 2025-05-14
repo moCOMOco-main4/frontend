@@ -37,12 +37,9 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     deleteMessageMutation.mutate(msgId);
   };
 
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const lastMessageRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const el = scrollRef.current;
-    if (el) {
-      el.scrollTop = el.scrollHeight;
-    }
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   return (
@@ -53,14 +50,18 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
         </button>
         <span className="ml-1 font-bold">{selectedRoomTitle}</span>
       </div>
-      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto py-2">
-        {messages?.map(msg => (
-          <ChatMessage
+      <div className="flex-1 space-y-3 overflow-y-auto py-2">
+        {messages?.map((msg, i) => (
+          <div
             key={msg.ChatMessage_id}
-            message={msg}
-            currentUserId={currentUserId}
-            handleDelete={() => handleDelete(msg.ChatMessage_id)}
-          />
+            ref={i === messages.length - 1 ? lastMessageRef : null}
+          >
+            <ChatMessage
+              message={msg}
+              currentUserId={currentUserId}
+              handleDelete={() => handleDelete(msg.ChatMessage_id)}
+            />
+          </div>
         ))}
       </div>
       <form
