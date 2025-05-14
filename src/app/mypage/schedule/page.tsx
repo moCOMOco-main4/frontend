@@ -1,50 +1,18 @@
 'use client';
 
 import MyMoimBox from '@/components/mypage/MyMoimBox';
-import { format } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../../styles/schedule.css';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useSchedules } from '@/api/functions/schedule';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-type Schedule = {
-  date: number;
-  memo: string;
-  role: string;
-};
-
 export default function SchedulePage() {
   const [date, setDate] = useState<Value>(new Date());
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const { access } = useAuthStore();
-
-  async function fetchSchedules() {
-    console.log(access);
-    try {
-      const response = await fetch(
-        'https://api.mocomoco.store/posts/applied/',
-        {
-          headers: {
-            Authorization: `Bearer ${access}`,
-          },
-        },
-      );
-      const data = await response.json();
-      setSchedules(Array.isArray(data) ? data : []);
-      console.log(data);
-    } catch (error) {
-      console.error('일정을 불러오는데 실패했습니다:', error);
-      setSchedules([]);
-    }
-  }
-
-  useEffect(() => {
-    fetchSchedules();
-  }, []);
+  const { data: schedules = [], isLoading, error } = useSchedules();
 
   const getSchedulesForDate = (date: Date) => {
     const timestamp = date.getTime();
@@ -74,6 +42,30 @@ export default function SchedulePage() {
 
     return null;
   };
+
+  if (isLoading) {
+    return (
+      <MyMoimBox title="일정 관리">
+        <div className="rounded-2xl border bg-white p-6 shadow-lg">
+          <div className="flex items-center justify-center">
+            <div className="text-gray-600">로딩 중...</div>
+          </div>
+        </div>
+      </MyMoimBox>
+    );
+  }
+
+  if (error) {
+    return (
+      <MyMoimBox title="일정 관리">
+        <div className="rounded-2xl border bg-white p-6 shadow-lg">
+          <div className="flex items-center justify-center">
+            <div className="text-red-500">일정을 불러오는데 실패했습니다.</div>
+          </div>
+        </div>
+      </MyMoimBox>
+    );
+  }
 
   return (
     <MyMoimBox title="일정 관리">
