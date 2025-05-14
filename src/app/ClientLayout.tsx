@@ -12,14 +12,13 @@ import ConfirmModal from '@/components/common/modal/ConfirmModal';
 const ClientLayout = () => {
   const [isAlarm] = useState(false);
 
-  const {
-    view,
-    isOpen: isChatOpen,
-    selectedRoomId,
-    openModal,
-    closeModal,
-  } = useChatStore();
-  const { isOpen: isConfirmOpen } = useModalStore();
+  const view = useChatStore(state => state.view);
+  const isChatOpen = useChatStore(state => state.isOpen);
+  const selectedRoomId = useChatStore(state => state.selectedRoomId);
+  const openModal = useChatStore(state => state.openModal);
+  const closeModal = useChatStore(state => state.closeModal);
+
+  const isConfirmOpen = useModalStore(state => state.isOpen);
 
   return (
     <>
@@ -28,7 +27,7 @@ const ClientLayout = () => {
         <Modal onClose={closeModal}>
           {view === 'list' && <ChatRooms />}
           {view === 'room' && selectedRoomId && (
-            <ChatMessages roomId={selectedRoomId} />
+            <ChatMessages room_id={selectedRoomId} />
           )}
         </Modal>
       ) : (

@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/useAuthStore';
 
-const BASE_URL = 'https://api.mocomoco.store/api';
+const BASE_URL = 'https://api.mocomoco.store';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -35,7 +35,8 @@ export const fetchClient = async (
     ...rest,
   });
 
-  if (!response.ok) throw new Error(`error: ${response.status}`);
+  if (!response.ok) throw new Error(`fetch error: ${response.status}`);
 
-  return response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 };
