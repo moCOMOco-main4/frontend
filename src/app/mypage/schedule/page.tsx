@@ -12,11 +12,9 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 type Schedule = {
-  post_id: number;
-  post_title: string;
-  date: string;
+  date: number;
   memo: string;
-  type: string;
+  role: string;
 };
 
 export default function SchedulePage() {
@@ -31,15 +29,16 @@ export default function SchedulePage() {
   async function fetchSchedules() {
     try {
       const response = await fetch(
-        'https://api.mocomoco.store/api/schedules/me/',
+        'https://api.mocomoco.store/api/v1/posts/applied/',
         {
           headers: {
-            'Authorization': `Bearer ${access}`,
+            Authorization: `Bearer ${access}`,
           },
-        }
+        },
       );
       const data = await response.json();
       setSchedules(Array.isArray(data) ? data : []);
+      console.log(data);
     } catch (error) {
       console.error('일정을 불러오는데 실패했습니다:', error);
       setSchedules([]);
@@ -47,8 +46,28 @@ export default function SchedulePage() {
   }
 
   const getSchedulesForDate = (date: Date) => {
-    const dateStr = format(date, 'yyyy-MM-dd');
-    return schedules.filter(schedule => schedule.date === dateStr);
+    const timestamp = date.getTime();
+    return schedules.filter(schedule => schedule.date === timestamp);
+  };
+
+  const getTileClassName = ({ date }: { date: Date }) => {
+    const dateSchedules = getSchedulesForDate(date);
+    if (dateSchedules.length === 0) return null;
+
+    // 해당 날짜의 일정들 중 role이 'writer'인 것이 있는지 확인
+    const hasWriterSchedule = dateSchedules.some(schedule => schedule.role === 'writer');
+    // 해당 날짜의 일정들 중 role이 'participant'인 것이 있는지 확인
+    const hasParticipantSchedule = dateSchedules.some(schedule => schedule.role === 'participant');
+
+    if (hasWriterSchedule && hasParticipantSchedule) {
+      return 'has-both-schedules';
+    } else if (hasWriterSchedule) {
+      return 'has-writer-schedule';
+    } else if (hasParticipantSchedule) {
+      return 'has-participant-schedule';
+    }
+
+    return null;
   };
 
   return (
@@ -63,10 +82,7 @@ export default function SchedulePage() {
               value={date}
               locale="ko-KR"
               className="!w-full !border-none"
-              tileClassName={({ date }) => {
-                const dateSchedules = getSchedulesForDate(date);
-                return dateSchedules.length ? 'has-schedule' : null;
-              }}
+              tileClassName={getTileClassName}
             />
             <div className="mt-4 flex items-center gap-4">
               <div className="flex items-center gap-2">
