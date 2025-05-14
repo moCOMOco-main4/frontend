@@ -15,7 +15,7 @@ const ChatMessage = ({ message, currentUserId, handleDelete }: MsgProps) => {
   const isMine = message.chat_user_id === currentUserId;
 
   return (
-    <div className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+    <div className={`group flex ${isMine ? 'justify-end' : 'justify-start'}`}>
       {!isMine && (
         <div className="mr-1 flex flex-col items-center">
           <Image
@@ -29,7 +29,7 @@ const ChatMessage = ({ message, currentUserId, handleDelete }: MsgProps) => {
         </div>
       )}
       <div
-        className={`group relative max-w-[75%] rounded-xl px-3 py-2 text-sm ${
+        className={`relative max-w-[75%] rounded-xl px-3 py-2 text-sm ${
           isMine
             ? 'rounded-br-none bg-main-base text-white'
             : 'rounded-bl-none border bg-white text-black'
