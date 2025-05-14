@@ -19,7 +19,7 @@ export const userAPI = {
     });
   },
   deleteUser: async () => {
-    return fetchClient('/api/auth/delete/', 'DELETE', {
+    return fetchClient('/api/auth/users/me/delete/', 'DELETE', {
       isAuth: true,
     });
   },

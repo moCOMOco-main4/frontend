@@ -12,6 +12,7 @@ import MyMoimBox from '@/components/mypage/MyMoimBox';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { userAPI } from '@/api/functions/userAPI';
+import { useRouter } from 'next/navigation';
 
 type User = {
   name: string;
@@ -28,12 +29,18 @@ type User = {
 
 export default function Mypage() {
   const [user, setUser] = useState<User | null>(null);
-  const { access } = useAuthStore();
+  const { access, hydrated } = useAuthStore();
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if (!access) return;
+    if (!hydrated) return;
 
+    if (!access) {
+      router.push('/auth/login');
+      return;
+    }
+
+    const fetchUser = async () => {
       try {
         const data = await userAPI.getUser();
         setUser(data);
@@ -44,7 +51,7 @@ export default function Mypage() {
     };
 
     fetchUser();
-  }, [access]);
+  }, [access, router]);
 
   const fullImageUrl = user?.profile_image ? user?.profile_image : Logo;
 
