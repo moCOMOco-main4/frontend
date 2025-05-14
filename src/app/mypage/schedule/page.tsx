@@ -22,10 +22,6 @@ export default function SchedulePage() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const { access } = useAuthStore();
 
-  useEffect(() => {
-    fetchSchedules();
-  }, []);
-
   async function fetchSchedules() {
     console.log(access);
     try {
@@ -45,6 +41,10 @@ export default function SchedulePage() {
       setSchedules([]);
     }
   }
+
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
 
   const getSchedulesForDate = (date: Date) => {
     const timestamp = date.getTime();
