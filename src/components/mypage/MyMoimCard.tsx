@@ -44,11 +44,11 @@ const MyMoimCard = ({ moim }: MoimProps) => {
           <p className="text-sm text-gray-500">{moim.place_name}</p>
         </div>
         <div className="flex items-center gap-3">
-          {moim.is_writer && <Settings size={20} />}
+          {moim.is_writer && <Settings size={20} color="gray" />}
           <span className="flex items-center gap-1 text-gray-500">
             <Users size={20} />
             <span className="text-sm">
-              {moim.people_status || 1}/{moim.max_people}
+              {moim.status || 1}/{moim.max_people}
             </span>
           </span>
           {isLikelist ? (
