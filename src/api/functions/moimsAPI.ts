@@ -29,9 +29,6 @@ export const moimsApi = {
       body: role,
     });
   },
-  cancelMoim: async (id: Number) => {
-    return fetchClient(`/api/posts/${id}/cancel/`, 'DELETE', { isAuth: true });
-  },
   likeMoim: async (id: Number) => {
     return fetchClient(`/api/posts/${id}/like/`, 'POST', { isAuth: true });
   },
