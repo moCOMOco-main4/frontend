@@ -3,7 +3,7 @@ import { fetchClient } from '../fetchClient';
 
 export const moimsApi = {
   postMoims: async (payload: MoimPayload) => {
-    return fetchClient('/api/posts', 'POST', {
+    return fetchClient('/posts/', 'POST', {
       isAuth: true,
       body: payload,
     });
