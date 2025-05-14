@@ -27,9 +27,10 @@ export default function SchedulePage() {
   }, []);
 
   async function fetchSchedules() {
+    console.log(access);
     try {
       const response = await fetch(
-        'https://api.mocomoco.store/api/v1/posts/applied/',
+        'https://api.mocomoco.store/posts/applied/',
         {
           headers: {
             Authorization: `Bearer ${access}`,
@@ -55,9 +56,13 @@ export default function SchedulePage() {
     if (dateSchedules.length === 0) return null;
 
     // 해당 날짜의 일정들 중 role이 'writer'인 것이 있는지 확인
-    const hasWriterSchedule = dateSchedules.some(schedule => schedule.role === 'writer');
+    const hasWriterSchedule = dateSchedules.some(
+      schedule => schedule.role === 'writer',
+    );
     // 해당 날짜의 일정들 중 role이 'participant'인 것이 있는지 확인
-    const hasParticipantSchedule = dateSchedules.some(schedule => schedule.role === 'participant');
+    const hasParticipantSchedule = dateSchedules.some(
+      schedule => schedule.role === 'participant',
+    );
 
     if (hasWriterSchedule && hasParticipantSchedule) {
       return 'has-both-schedules';
