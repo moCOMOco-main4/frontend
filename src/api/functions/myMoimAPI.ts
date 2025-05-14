@@ -8,7 +8,7 @@ export const myMoimAPI = {
   getJoinedList: async (): Promise<moimCard[]> => {
     return fetchClient('/posts/joined/', 'GET', { isAuth: true });
   },
-  deleteMyMoim: async (id: number) => {
+  cancelMyMoim: async (id: number) => {
     return fetchClient(`/posts/${id}/cancel/`, 'DELETE', {
       isAuth: true,
     });

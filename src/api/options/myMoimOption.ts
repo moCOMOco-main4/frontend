@@ -12,8 +12,8 @@ export const myMoimOption = {
       queryKey: ['mymoim', 'joined'],
       queryFn: () => myMoimAPI.getJoinedList(),
     }),
-  deleteMymoim: (queryClient: QueryClient) => ({
-    mutationFn: (id: number) => myMoimAPI.deleteMyMoim(id),
+  cancelMyMoim: (queryClient: QueryClient) => ({
+    mutationFn: (id: number) => myMoimAPI.cancelMyMoim(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['mymoim', 'joined'],

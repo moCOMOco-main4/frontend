@@ -23,8 +23,8 @@ const ClientLayout = () => {
   const isConfirmOpen = useModalStore(state => state.isOpen);
 
   const queryClient = useQueryClient();
-  const deleteMyMoimMutation = useMutation(
-    myMoimOption.deleteMymoim(queryClient),
+  const cancelMyMoimMutation = useMutation(
+    myMoimOption.cancelMyMoim(queryClient),
   );
 
   return (
@@ -33,7 +33,7 @@ const ClientLayout = () => {
         <ConfirmModal
           input={true}
           content="탈퇴 사유를 작성해주세요"
-          onConfirm={id => deleteMyMoimMutation.mutate(id)}
+          onConfirm={id => cancelMyMoimMutation.mutate(id)}
         />
       )}
       {isChatOpen ? (
