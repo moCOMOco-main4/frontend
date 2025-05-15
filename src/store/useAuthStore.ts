@@ -23,6 +23,7 @@ interface UserState {
   logout: () => void;
   updateUser: (user: User) => void;
   fetchUser: () => Promise<void>;
+  setToken: (access: string) => void;
 }
 
 // create()	상태 스토어를 생성하는 함수
@@ -43,6 +44,11 @@ export const useAuthStore = create<UserState>()(
           refresh,
           user,
           isLoggedIn: true,
+        }),
+
+      setToken: access =>
+        set({
+          access,
         }),
 
       logout: () => {

@@ -29,7 +29,7 @@ type User = {
 
 export default function Mypage() {
   const [user, setUser] = useState<User | null>(null);
-  const { access, hydrated } = useAuthStore();
+  const { access, hydrated, refresh } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -88,6 +88,22 @@ export default function Mypage() {
           {user?.position_name}
         </div>
       </div>
+      <button
+        onClick={() => {
+          // 로컬스토리지에서 access 빈문자열
+          // zustand 스토어에서 access 토큰 값 빈문자, refresh 그대로 또는 '' (null 값 방지)
+          // user도 위에 타입 떄문에 무조건 있다고 선언
+          useAuthStore
+            .getState()
+            .setAuth(
+              'none_access',
+              useAuthStore.getState().refresh ?? '',
+              useAuthStore.getState().user!,
+            );
+        }}
+      >
+        액세스 토큰 만료
+      </button>
 
       {/* 정보 카드 */}
       <div className="flex w-full flex-col justify-between gap-6 lg:flex-row">

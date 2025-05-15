@@ -6,11 +6,18 @@ import { fetchClient } from '@api/fetchClient';
 
 export const useLogout = () => {
   const router = useRouter();
-  const { access, logout } = useAuthStore();
+  const { access, logout, refresh } = useAuthStore();
 
   const logoutHandler = async () => {
     try {
-      await fetchClient('/api/auth/logout/', 'POST');
+      await fetch('https://api.mocomoco.store/api/auth/logout/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access}`,
+        },
+        body: JSON.stringify({ refresh }),
+      });
     } catch (error) {
       console.error('서버 로그아웃 실패:', error);
     } finally {
