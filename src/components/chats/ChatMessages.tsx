@@ -50,7 +50,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
         </button>
         <span className="ml-1 font-bold">{selectedRoomTitle}</span>
       </div>
-      <div className="flex-1 space-y-3 overflow-y-auto py-2">
+      <div className="flex-1 space-y-2.5 overflow-y-auto py-2">
         {messages?.map((msg, i) => (
           <div
             key={msg.ChatMessage_id}
