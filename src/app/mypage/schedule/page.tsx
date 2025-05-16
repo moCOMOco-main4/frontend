@@ -32,7 +32,9 @@ export default function SchedulePage() {
 
   const getSchedulesForDate = (date: Date) => {
     const dateString = date.toISOString().split('T')[0];
-    return schedules?.filter((schedule: Schedule) => schedule.date.startsWith(dateString));
+    return schedules?.filter((schedule: Schedule) =>
+      schedule.date.startsWith(dateString),
+    );
   };
 
   const getTileClassName = ({ date }: { date: Date }) => {
@@ -72,4 +74,4 @@ export default function SchedulePage() {
       </div>
     </MyMoimBox>
   );
-};
+}
