@@ -8,6 +8,7 @@ import '../../../styles/schedule.css';
 import { useQueryClient } from '@tanstack/react-query';
 import { scheduleAPI } from '@/api/functions/scheduleAPI';
 import { Schedule } from '@/types/schedule';
+import { setDate } from 'date-fns';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -27,11 +28,11 @@ export default function SchedulePage() {
     };
 
     fetchSchedule();
-  },[]};
+  }, []);
 
   const getSchedulesForDate = (date: Date) => {
     const dateString = date.toISOString().split('T')[0];
-    return schedules?.filter(schedule => schedule.date.startsWith(dateString));
+    return schedules?.filter((schedule: Schedule) => schedule.date.startsWith(dateString));
   };
 
   const getTileClassName = ({ date }: { date: Date }) => {
@@ -72,4 +73,3 @@ export default function SchedulePage() {
     </MyMoimBox>
   );
 };
-//네네
