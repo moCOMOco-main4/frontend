@@ -8,10 +8,8 @@ import stack_next from '@images/stack_Next.png';
 import stack_git from '@images/stack_git.png';
 import Logo from '@images/Logo.png';
 import Link from 'next/link';
-import MyMoimBox from '@/components/mypage/MyMoimBox';
-import { useEffect, useState } from 'react';
+import MyMoimBox from '@components/mypage/MyMoimBox';
 import { useAuthStore } from '@/store/useAuthStore';
-import { userAPI } from '@/api/functions/userAPI';
 import { useRouter } from 'next/navigation';
 
 type User = {
@@ -28,30 +26,8 @@ type User = {
 };
 
 export default function Mypage() {
-  const [user, setUser] = useState<User | null>(null);
-  const { access, hydrated, refresh } = useAuthStore();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!hydrated) return;
-
-    if (!access) {
-      router.push('/auth/login');
-      return;
-    }
-
-    const fetchUser = async () => {
-      try {
-        const data = await userAPI.getUser();
-        setUser(data);
-        console.log(data);
-      } catch (err) {
-        console.error('유저 정보 가져오기 실패:', err);
-      }
-    };
-
-    fetchUser();
-  }, [access, router]);
+  const user = useAuthStore(state => state.user);
 
   const fullImageUrl = user?.profile_image ? user?.profile_image : Logo;
 
@@ -81,29 +57,12 @@ export default function Mypage() {
           {user?.nickname}
         </p>
       </div>
-
       {/* 탭 */}
       <div className="mb-4 flex justify-start gap-2">
         <div className="rounded-lg border bg-white px-4 py-1 font-medium">
           {user?.position_name}
         </div>
       </div>
-      <button
-        onClick={() => {
-          // 로컬스토리지에서 access 빈문자열
-          // zustand 스토어에서 access 토큰 값 빈문자, refresh 그대로 또는 '' (null 값 방지)
-          // user도 위에 타입 떄문에 무조건 있다고 선언
-          useAuthStore
-            .getState()
-            .setAuth(
-              'none_access',
-              useAuthStore.getState().refresh ?? '',
-              useAuthStore.getState().user!,
-            );
-        }}
-      >
-        액세스 토큰 만료
-      </button>
 
       {/* 정보 카드 */}
       <div className="flex w-full flex-col justify-between gap-6 lg:flex-row">
@@ -197,7 +156,7 @@ export default function Mypage() {
                   className="mb-2 break-all rounded-xl border bg-white p-1"
                   aria-label="GitHub 링크"
                 >
-                  {user.github_url}
+                  {user?.github_url}
                 </p>
               </div>
             )}

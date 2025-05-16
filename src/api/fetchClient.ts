@@ -27,7 +27,6 @@ export const fetchClient = async (
     : '';
 
   const fetchWithToken = async (token: string | null) => {
-    // 지우기
     const safeHeaders: HeadersInit = {
       'Content-Type': 'application/json',
       ...(isAuth && typeof token === 'string' && token.trim()
@@ -35,8 +34,6 @@ export const fetchClient = async (
         : {}),
       ...(headers || {}),
     };
-
-    console.log(safeHeaders);
 
     const data = await fetch(`${BASE_URL}${endpoint}${queryString}`, {
       method,
@@ -56,11 +53,11 @@ export const fetchClient = async (
       // 스토어 -> 로컬스토리지로 변경
       // const newAccess = useAuthStore.getState().access;
       // 🍓 다시 보기
-      // response = await fetchWithToken(refreshed);
+      response = await fetchWithToken(refreshed);
     } else {
       // logout();
-      // useLogout();
-      // window.location.href = '/auth/login';
+      useLogout();
+      window.location.href = '/auth/login';
       throw new Error('로그인이 만료되었습니다.');
     }
   }
@@ -93,7 +90,6 @@ const refreshAccessToken = async (refresh: string, token: string) => {
     if (!response.ok) throw new Error();
 
     const data = await response.json();
-    console.log(data);
     const { access } = data;
 
     if (access) {

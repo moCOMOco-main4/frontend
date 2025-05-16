@@ -9,8 +9,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { userAPI } from '@/api/functions/userAPI';
 import { useRouter } from 'next/navigation';
 import { uploadImage } from '@/api/functions/uploadFileAPI';
-import useEditForm from '@/components/mypage/useEditForm';
-import ProfileImageUploader from './MyImgUpload';
+import useEditForm from '@/components/mypage/editForm';
+import ProfileImageUploader from '../imgUpload';
 import { useDeleteAccount } from '@/hooks/useDeleteAccount';
 
 export default function EditForm() {

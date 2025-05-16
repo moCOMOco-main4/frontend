@@ -10,6 +10,9 @@ interface User {
   profile_image?: string;
   position?: number;
   position_name?: string;
+  github_url?: string;
+  intro?: string;
+  portfolio_url?: string;
 }
 
 interface UserState {

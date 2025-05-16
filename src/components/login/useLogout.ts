@@ -16,7 +16,7 @@ export const useLogout = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${access}`,
         },
-        body: JSON.stringify({ refresh }),
+        body: JSON.stringify({ refresh_token: refresh }),
       });
     } catch (error) {
       console.error('서버 로그아웃 실패:', error);

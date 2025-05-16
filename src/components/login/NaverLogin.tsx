@@ -15,7 +15,7 @@ export default function NaverLogin() {
   useEffect(() => {
     const handleNaverLogin = async (code: string, state: string) => {
       try {
-        const data = await fetchClient('/api/auth/login/kakao/', 'POST', {
+        const data = await fetchClient('/api/auth/login/naver/', 'POST', {
           body: { provider: 'naver', code, state }, // 네이버는 state 포함
         });
 
