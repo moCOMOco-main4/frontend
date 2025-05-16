@@ -1,5 +1,6 @@
 'use client';
 
+import { moimsAPI } from '@/api/functions/moimsAPI';
 import Button from '@/components/common/button/Button';
 import Dropdown from '@/components/common/input/Dropdown';
 import CommonInput from '@/components/common/input/Input';
@@ -10,17 +11,19 @@ import { Search, Server } from 'lucide-react';
 import { useState } from 'react';
 
 interface Props {
-  initialData?: MoimPayload;
+  initialData?: MoimPayload & { id?: number };
 }
 
 export default function MoimForm({ initialData }: Props) {
   const [title, setTitle] = useState(initialData?.title ?? '');
   const [content, setContent] = useState(initialData?.content ?? '');
-  const [moim, setMoim] = useState(initialData?.moim ?? '');
-  const [place, setPlace] = useState(initialData?.place ?? '');
+  const [category, setCategory] = useState(initialData?.category ?? '');
+  const [place, setPlace] = useState(initialData?.place_name ?? '');
+  const [adress, setAdress] = useState(initialData?.adress ?? '');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
+  const [images, setImages] = useState<File[]>([]);
   const [roles, setRoles] = useState<
     Record<(typeof ROLE_LIST)[number], number>
   >({
@@ -76,6 +79,32 @@ export default function MoimForm({ initialData }: Props) {
     }
   };
 
+  const handleSubmit = async () => {
+    const fullDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+
+    const payload: MoimPayload = {
+      title,
+      category,
+      content,
+      place_name: place,
+      adress,
+      date: fullDate,
+      roles,
+    };
+
+    try {
+      if (initialData?.id) {
+        await moimsAPI.editMoim(initialData.id, payload);
+        alert('모임이 수정되었습니다.');
+      } else {
+        await moimsAPI.postMoims(payload);
+        alert('모임이 생성되었습니다.');
+      }
+    } catch (error) {
+      console.error('모임 저장 중 오류:', error);
+      alert('오류가 발생했습니다.');
+    }
+  };
   return (
     <>
       <div className="flex flex-col gap-10">
@@ -92,9 +121,10 @@ export default function MoimForm({ initialData }: Props) {
             <TextEditor
               value={content}
               onChange={setContent}
-              onImageUpload={file => {
-                //추후 api 연결시 이미지 업로드 api로 교체
-                console.log('업로드된 이미지 파일:', file);
+              onImageUpload={(file: File) => {
+                setImages(prev => [...prev, file]);
+                const marker = `{{image${images.length}}}`;
+                setContent(prev => `${prev}\n\n${marker}`);
               }}
             />
           </div>
@@ -107,8 +137,8 @@ export default function MoimForm({ initialData }: Props) {
               <div className="flex flex-col justify-center gap-[5px]">
                 <p className="text-[17px]"> 모임 카테고리 </p>
                 <Dropdown
-                  selected={moim}
-                  onSelect={setMoim}
+                  selected={category}
+                  onSelect={setCategory}
                   placeholder=""
                   className="w-[100px]"
                   categories={MOIM_CATEGORY}
@@ -119,11 +149,20 @@ export default function MoimForm({ initialData }: Props) {
                 <div className="flex w-full items-center gap-[10px]">
                   <CommonInput
                     placeholder="검색"
+                    value={adress}
+                    onChange={e => setAdress(e.target.value)}
+                    box="box"
+                  />
+                  <Search color="#A0B092" />
+                </div>
+                <p className="text-[17px]"> 상세 주소</p>
+                <div className="flex w-full items-center gap-[10px]">
+                  <CommonInput
+                    placeholder="검색"
                     value={place}
                     onChange={e => setPlace(e.target.value)}
                     box="box"
                   />
-                  <Search color="#A0B092" />
                 </div>
               </div>
               <div className="flex flex-col justify-center gap-[5px]">
@@ -185,7 +224,12 @@ export default function MoimForm({ initialData }: Props) {
             </div>
           </div>
         </div>
-        <Button type="submit" size="lg" className="mb-3 w-[60px] self-center">
+        <Button
+          type="submit"
+          size="lg"
+          className="mb-3 w-[60px] self-center"
+          onClick={handleSubmit}
+        >
           작성
         </Button>
       </div>
