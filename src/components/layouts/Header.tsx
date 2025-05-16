@@ -8,7 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Notifications from '@/components/notifications/Notifications';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useLogout } from '@/hooks/useLogout';
 import { useModalStore } from '@/store/useModalStore';
 import { useLogout } from '@/components/login/useLogout';
 
@@ -48,7 +47,7 @@ const Header = () => {
                   <div className="relative">
                     <Bell
                       color="#a0b092"
-                      onClick={() => open(0, 'noti')}
+                      onClick={() => open('noti')}
                       className="h-[20px] w-[20px] cursor-pointer sm:h-[40px] sm:w-[40px]"
                     />
                   </div>
@@ -67,7 +66,7 @@ const Header = () => {
                     className="ml-1 h-[20px] w-[20px] cursor-pointer sm:h-[40px] sm:w-[40px]"
                     size={35}
                     color="#a0b092"
-                    onClick={() => open(1, 'menu')}
+                    onClick={() => open('menu')}
                   />
                 </li>
               </>
