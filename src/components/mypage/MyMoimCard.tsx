@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Logo from '@images/Logo.png';
+import UserProfile from '@images/UserProfile.png';
 import FavoriteButton from '@/components/common/button/FavoriteButton';
 import { Settings, Users } from 'lucide-react';
 import Button from '@/components/common/button/Button';
@@ -40,7 +40,7 @@ const MyMoimCard = ({ moim }: MoimProps) => {
           )}
         </span>
         <Image
-          src={moim.writer.profile_image || Logo}
+          src={moim.writer.profile_image || UserProfile}
           alt={moim.writer.nickname}
           width={50}
           height={50}
