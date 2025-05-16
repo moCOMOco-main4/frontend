@@ -1,81 +1,60 @@
 'use client';
 
 import MyMoimBox from '@/components/mypage/MyMoimBox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../../styles/schedule.css';
-import { useSchedules } from '@/api/functions/schedule';
+import { useQueryClient } from '@tanstack/react-query';
+import { scheduleAPI } from '@/api/functions/scheduleAPI';
+import { Schedule } from '@/types/schedule';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function SchedulePage() {
   const [date, setDate] = useState<Value>(new Date());
-  const { data: schedules = [], isLoading, error } = useSchedules();
+  const [schedules, setSchedules] = useState<Schedule[] | null>(null);
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const data: Schedule[] = await scheduleAPI.getScheduleList();
+        setSchedules(data);
+      } catch (err) {
+        console.error('유저 정보 가져오기 실패:', err);
+      }
+    };
+
+    fetchSchedule();
+  },[]};
 
   const getSchedulesForDate = (date: Date) => {
-    const timestamp = date.getTime();
-    return schedules.filter(schedule => schedule.date === timestamp);
+    const dateString = date.toISOString().split('T')[0];
+    return schedules?.filter(schedule => schedule.date.startsWith(dateString));
   };
 
   const getTileClassName = ({ date }: { date: Date }) => {
     const dateSchedules = getSchedulesForDate(date);
-    if (dateSchedules.length === 0) return null;
-
-    // 해당 날짜의 일정들 중 role이 'writer'인 것이 있는지 확인
-    const hasWriterSchedule = dateSchedules.some(
-      schedule => schedule.role === 'writer',
-    );
-    // 해당 날짜의 일정들 중 role이 'participant'인 것이 있는지 확인
-    const hasParticipantSchedule = dateSchedules.some(
-      schedule => schedule.role === 'participant',
-    );
-
-    if (hasWriterSchedule && hasParticipantSchedule) {
-      return 'has-both-schedules';
-    } else if (hasWriterSchedule) {
-      return 'has-writer-schedule';
-    } else if (hasParticipantSchedule) {
-      return 'has-participant-schedule';
-    }
-
-    return null;
+    if (dateSchedules?.length === 0) return null;
+    return 'has-schedule';
   };
 
-  if (isLoading) {
-    return (
-      <MyMoimBox title="일정 관리">
-        <div className="rounded-2xl border bg-white p-6 shadow-lg">
-          <div className="flex items-center justify-center">
-            <div className="text-gray-600">로딩 중...</div>
-          </div>
-        </div>
-      </MyMoimBox>
-    );
-  }
-
-  if (error) {
-    return (
-      <MyMoimBox title="일정 관리">
-        <div className="rounded-2xl border bg-white p-6 shadow-lg">
-          <div className="flex items-center justify-center">
-            <div className="text-red-500">일정을 불러오는데 실패했습니다.</div>
-          </div>
-        </div>
-      </MyMoimBox>
-    );
-  }
+  const handleDateChange = (newDate: Value) => {
+    setDate(newDate);
+    // 날짜가 변경될 때마다 데이터를 리페치
+  };
 
   return (
     <MyMoimBox title="일정 관리">
-      {/* 메인 컨텐츠 */}
       <div className="rounded-2xl border bg-white p-6 shadow-lg">
         <div className="flex gap-8">
-          {/* 달력 */}
           <div className="flex-1">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">일정 캘린더</h2>
+            </div>
             <Calendar
-              onChange={setDate}
+              onChange={handleDateChange}
               value={date}
               locale="ko-KR"
               className="!w-full !border-none"
@@ -84,13 +63,7 @@ export default function SchedulePage() {
             <div className="mt-4 flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 rounded bg-[#E1F0D3]"></div>
-                <span className="text-sm text-gray-600">
-                  내가 생성한 그룹 일정
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-4 w-4 rounded bg-[#F6FBEF]"></div>
-                <span className="text-sm text-gray-600">다른 그룹 일정</span>
+                <span className="text-sm text-gray-600">일정이 있는 날짜</span>
               </div>
             </div>
           </div>
@@ -98,4 +71,5 @@ export default function SchedulePage() {
       </div>
     </MyMoimBox>
   );
-}
+};
+//네네

@@ -1,5 +1,7 @@
 export type Schedule = {
-  date: number;
-  memo: string;
-  role: string;
-};
+  id: number;
+  post: number;
+  date: string;
+  description: string;
+  created_at: string;
+}; 
