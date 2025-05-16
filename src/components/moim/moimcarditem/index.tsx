@@ -3,14 +3,14 @@ import Button from '@/components/common/button/Button';
 import FavoriteButton from '@/components/common/button/FavoriteButton';
 import Image from 'next/image';
 import basicImage from '@images/basicImage.png';
-import { GetMoimLIST } from '@/types/moim';
+import { GetMoimList } from '@/types/moim';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDislikeMoim, useLikeMoim } from '@/api/hooks/useMoims';
 import { MoimRoleStatus } from '@components/moim/moimrolestatus';
 
 interface MoimCardItemProps {
-  item: GetMoimLIST;
+  item: GetMoimList;
 }
 
 export const MoimCardItem = ({ item }: MoimCardItemProps) => {

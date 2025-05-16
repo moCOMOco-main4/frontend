@@ -6,12 +6,12 @@ import Dropdown from '@/components/common/input/Dropdown';
 import CommonInput from '@/components/common/input/Input';
 import TextEditor from '@/components/moim/texteditor';
 import { MOIM_CATEGORY, ROLE_LIST, YEAR_LIST } from '@/constants/config';
-import { MoimPayload } from '@/types/moim';
+import { PostMoim } from '@/types/moim';
 import { Search, Server } from 'lucide-react';
 import { useState } from 'react';
 
 interface Props {
-  initialData?: MoimPayload & { id?: number };
+  initialData?: PostMoim & { id?: number };
 }
 
 export default function MoimForm({ initialData }: Props) {
@@ -23,7 +23,6 @@ export default function MoimForm({ initialData }: Props) {
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
-  const [images, setImages] = useState<File[]>([]);
   const [roles, setRoles] = useState<
     Record<(typeof ROLE_LIST)[number], number>
   >({
@@ -32,6 +31,9 @@ export default function MoimForm({ initialData }: Props) {
     풀스택: 0,
     디자이너: 0,
   });
+  const [latitude, setLatitude] = useState<number>(0);
+  const [longitude, setLongitude] = useState<number>(0);
+  const [image, setImage] = useState<File | null>(null);
 
   const increaseRole = (role: (typeof ROLE_LIST)[number]) => {
     setRoles(prev => ({ ...prev, [role]: prev[role] + 1 }));
@@ -80,28 +82,41 @@ export default function MoimForm({ initialData }: Props) {
   };
 
   const handleSubmit = async () => {
-    const fullDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    if (!title || !content || !category || !place || !adress) {
+      alert('필수 정보를 모두 입력해 주세요.');
+      return;
+    }
 
-    const payload: MoimPayload = {
-      title,
-      category,
-      content,
-      place_name: place,
-      adress,
-      date: fullDate,
-      roles,
-    };
+    const max_people = Object.values(roles).reduce((acc, cur) => acc + cur, 0);
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('category', category);
+    formData.append('place_name', place);
+    formData.append('address', adress);
+    formData.append('latitude', latitude.toString());
+    formData.append('longitude', longitude.toString());
+    formData.append('max_people', max_people.toString());
+
+    if (roles['프론트엔드'])
+      formData.append('frontend', roles['프론트엔드'].toString());
+    if (roles['백엔드']) formData.append('backend', roles['백엔드'].toString());
+    if (roles['디자이너'])
+      formData.append('designer', roles['디자이너'].toString());
+    if (roles['풀스택'])
+      formData.append('fullstack', roles['풀스택'].toString());
+
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
-      if (initialData?.id) {
-        await moimsAPI.editMoim(initialData.id, payload);
-        alert('모임이 수정되었습니다.');
-      } else {
-        await moimsAPI.postMoims(payload);
-        alert('모임이 생성되었습니다.');
-      }
+      await moimsAPI.postMoims(formData);
+      alert('모임이 생성되었습니다.');
     } catch (error) {
-      console.error('모임 저장 중 오류:', error);
+      console.error('모임 전송 중 오류:', error);
+      console.log(Array.from(formData.entries()));
       alert('오류가 발생했습니다.');
     }
   };
@@ -122,8 +137,8 @@ export default function MoimForm({ initialData }: Props) {
               value={content}
               onChange={setContent}
               onImageUpload={(file: File) => {
-                setImages(prev => [...prev, file]);
-                const marker = `{{image${images.length}}}`;
+                setImage(file);
+                const marker = `{{image}}`;
                 setContent(prev => `${prev}\n\n${marker}`);
               }}
             />

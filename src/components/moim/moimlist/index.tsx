@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import { useState } from 'react';
 import Dropdown from '@/components/common/input/Dropdown';
 import { MOIM_LIST } from '@/constants/config';
+import { notFound } from 'next/navigation';
 
 export const MoimList = () => {
   const [selectCategory, setSelectCategory] = useState('전체');
@@ -16,7 +17,7 @@ export const MoimList = () => {
   const { data, isLoading, isError, error } = useMoimsList();
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>에러 발생: {error.message}</div>;
-  if (!data) return <div>에러 발생</div>;
+  if (!data) return notFound();
 
   const categoryMap: Record<string, string> = {
     전체: '',

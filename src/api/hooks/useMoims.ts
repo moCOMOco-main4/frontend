@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { moimsAPI } from '../functions/moimsAPI';
-import { MoimPayload } from '@/types/moim';
 
 export const useMoimsList = () => {
   return useQuery({
@@ -13,7 +12,6 @@ export const useMoimDetail = (id: number) => {
   return useQuery({
     queryKey: ['moim', id],
     queryFn: () => moimsAPI.getMoimDetail(id),
-    enabled: !!id,
   });
 };
 

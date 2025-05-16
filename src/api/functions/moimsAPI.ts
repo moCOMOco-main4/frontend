@@ -1,26 +1,23 @@
-import { GetMoimLIST, moimCard, MoimPayload } from '@/types/moim';
+import { GetMoimDetail, GetMoimList, PostMoim } from '@/types/moim';
 import { fetchClient } from '../fetchClient';
 
 export const moimsAPI = {
-  postMoims: async (payload: MoimPayload): Promise<MoimPayload[]> => {
+  postMoims: async (formData: FormData): Promise<any> => {
     return fetchClient('/posts/', 'POST', {
       isAuth: true,
-      body: payload,
+      body: formData,
     });
   },
-  getMoimsList: async (): Promise<GetMoimLIST[]> => {
+  getMoimsList: async (): Promise<GetMoimList[]> => {
     return fetchClient(`/posts/`, 'GET', { isAuth: true });
   },
-  getMoimDetail: async (id: Number) => {
+  getMoimDetail: async (id: Number): Promise<GetMoimDetail> => {
     return fetchClient(`/posts/${id}/`, 'GET', { isAuth: true });
   },
   deleteMoim: async (id: Number) => {
     return fetchClient(`/posts/${id}/`, 'DELETE', { isAuth: true });
   },
-  editMoim: async (
-    id: Number,
-    payload: MoimPayload,
-  ): Promise<MoimPayload[]> => {
+  editMoim: async (id: Number, payload: PostMoim): Promise<PostMoim[]> => {
     return fetchClient(`/posts/${id}/`, 'PUT', {
       isAuth: true,
       body: payload,
