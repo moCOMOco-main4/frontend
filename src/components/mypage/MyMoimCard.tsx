@@ -19,7 +19,7 @@ const MyMoimCard = ({ moim }: MoimProps) => {
   const router = useRouter();
   const isLikelist = pathname.startsWith('/mypage/likelist');
 
-  const { open } = useModalStore();
+  const open = useModalStore(state => state.open);
 
   return (
     <>

@@ -4,11 +4,20 @@ import { myMoimOption } from '@/api/options/myMoimOption';
 import Button from '@/components/common/button/Button';
 import MyMoimBox from '@/components/mypage/MyMoimBox';
 import MyMoimCard from '@/components/mypage/MyMoimCard';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import ConfirmModal from '@/components/common/modal/ConfirmModal';
+import { useModalStore } from '@/store/useModalStore';
 
 export default function JoinPage() {
   const router = useRouter();
+
+  const isConfirmOpen = useModalStore(state => state.isOpen);
+
+  const queryClient = useQueryClient();
+  const cancelMyMoimMutation = useMutation(
+    myMoimOption.cancelMyMoim(queryClient),
+  );
 
   const { data } = useQuery(myMoimOption.joinedList());
   const joinList = data ?? [];
@@ -22,6 +31,13 @@ export default function JoinPage() {
           <p className="text-center">참여중인 모임이 없어요</p>
           <Button onClick={() => router.push('/moims')}>구경 가기</Button>
         </div>
+      )}
+      {isConfirmOpen && (
+        <ConfirmModal
+          input={true}
+          content="탈퇴 사유를 작성해주세요"
+          onConfirm={id => cancelMyMoimMutation.mutate(id)}
+        />
       )}
     </MyMoimBox>
   );
