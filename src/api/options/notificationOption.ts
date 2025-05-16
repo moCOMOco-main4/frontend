@@ -1,5 +1,6 @@
 import { notificationAPI } from '@/api/functions/notificationAPI';
-import { queryOptions } from '@tanstack/react-query';
+import { useChatStore } from '@/store/useChatStore';
+import { QueryClient, queryOptions } from '@tanstack/react-query';
 
 export const notificationOption = {
   notiList: () =>
@@ -7,4 +8,16 @@ export const notificationOption = {
       queryKey: ['notification'],
       queryFn: () => notificationAPI.getNotiList(),
     }),
+  patchRead: (queryClient: QueryClient) => ({
+    mutationFn: (id: number) => notificationAPI.patchRead(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['notification'],
+      });
+      useChatStore.getState().openModal();
+    },
+    onError: (error: unknown) => {
+      console.error('알림 확인 실패:', error);
+    },
+  }),
 };
