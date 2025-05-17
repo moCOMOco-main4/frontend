@@ -15,11 +15,6 @@ export type MyMoim = {
   is_closed: boolean;
   created_at: string;
   updated_at?: string;
-  writer: {
-    id: number;
-    nickname: string;
-    profile_image: string | null;
-  };
   is_liked: boolean;
   is_applied: boolean;
   current_people: number;
@@ -30,4 +25,5 @@ export type MyMoim = {
     frontend?: number;
     fullstack?: number;
   };
+  is_writer: boolean;
 };

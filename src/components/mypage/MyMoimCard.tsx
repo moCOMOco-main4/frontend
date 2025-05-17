@@ -9,7 +9,9 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useModalStore } from '@/store/useModalStore';
 import { MyMoim } from '@/types/mymoim';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useState } from 'react';
+import { useDislikeMoim, useLikeMoim } from '@/api/hooks/useMoims';
+import { useQueryClient } from '@tanstack/react-query';
 
 type MoimProps = {
   moim: MyMoim;
@@ -22,8 +24,24 @@ const MyMoimCard = ({ moim }: MoimProps) => {
 
   const open = useModalStore(state => state.open);
 
-  const user = useAuthStore(state => state.user);
-  const isWriter = user?.id === moim.writer.id;
+  const [isLiked, setIsLiked] = useState(moim.is_liked);
+  const likeMoim = useLikeMoim(moim.id);
+  const disLikeMoim = useDislikeMoim(moim.id);
+  const queryClient = useQueryClient();
+  const handleToggleLike = () => {
+    const next = !isLiked;
+    setIsLiked(next);
+
+    const mutation = next ? likeMoim : disLikeMoim;
+    const rollback = () => setIsLiked(!next);
+
+    mutation.mutate(undefined, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['mymoim', 'liked'] });
+      },
+      onError: rollback,
+    });
+  };
 
   return (
     <>
@@ -40,8 +58,8 @@ const MyMoimCard = ({ moim }: MoimProps) => {
           )}
         </span>
         <Image
-          src={moim.writer.profile_image || UserProfile}
-          alt={moim.writer.nickname}
+          src={UserProfile}
+          alt={moim.title}
           width={50}
           height={50}
           className="rounded-full object-cover"
@@ -54,7 +72,7 @@ const MyMoimCard = ({ moim }: MoimProps) => {
           <p className="text-sm text-gray-500">{moim.place_name}</p>
         </div>
         <div className="flex items-center gap-3">
-          {isWriter && (
+          {moim.is_writer && (
             <Settings
               size={20}
               color="gray"
@@ -72,7 +90,12 @@ const MyMoimCard = ({ moim }: MoimProps) => {
             </span>
           </span>
           {isLikelist ? (
-            <FavoriteButton type={'star'} color="#A0B092" />
+            <FavoriteButton
+              type={'star'}
+              color="#A0B092"
+              isOn={isLiked}
+              onToggle={handleToggleLike}
+            />
           ) : (
             <Button
               size="xs"
