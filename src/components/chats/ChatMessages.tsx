@@ -103,9 +103,13 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     [oldMessages, message],
   );
 
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const lastMessageRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+    lastMessageRef.current?.scrollIntoView({
+      behavior: isFirstLoad ? 'auto' : 'smooth',
+    });
+    if (isFirstLoad) setIsFirstLoad(false);
   }, [allMessages]);
 
   return (
