@@ -6,19 +6,17 @@ import Banner from '@images/Banner.png';
 import { Bell, CircleUserRound, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
 import Notifications from '@/components/notifications/Notifications';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useLogout } from '@/hooks/useLogout';
+import { useModalStore } from '@/store/useModalStore';
+import { useLogout } from '@/components/login/useLogout';
 
 const Header = () => {
   const logoutHandler = useLogout();
 
-  const user = useAuthStore(state => state.user);
   const isLoggedIn = useAuthStore(state => state.isLoggedIn);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isNotiOpen, setIsNotiOpen] = useState(false);
+  const { isOpen: isModalOpen, open, close, type } = useModalStore();
 
   const handleLogout = async () => {
     await logoutHandler();
@@ -26,10 +24,14 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-30 h-[80px] w-full bg-main-light py-4">
+    <header className="sticky top-0 z-30 h-[64px] w-full bg-main-light py-4 sm:h-[80px]">
       <div className="relative flex justify-between">
         <Link href="/">
-          <Image src={Banner} width={150} alt="헤더 이미지" />
+          <Image
+            src={Banner}
+            alt="헤더 이미지"
+            className="h-auto w-[100px] sm:w-[150px]"
+          />
         </Link>
         <nav className="font-bold text-main-header">
           <ul className="flex items-center justify-between gap-3 sm:gap-5">
@@ -39,34 +41,34 @@ const Header = () => {
                   <Link href="/">
                     <div
                       onClick={() => handleLogout()}
-                      className="cursor-pointer text-[10px] font-bold hover:underline sm:text-[15px]"
+                      className="cursor-pointer text-[12px] font-bold hover:underline sm:text-[16px]"
                     >
                       LOGOUT
                     </div>
                   </Link>
                 </li>
                 <li>
-                  <Bell
-                    color="#a0b092"
-                    onClick={() => setIsNotiOpen(true)}
-                    className="h-[20px] w-[20px] cursor-pointer sm:h-[40px] sm:w-[40px]"
-                  />
+                  <div className="relative">
+                    <Bell
+                      color="#a0b092"
+                      onClick={() => open('noti')}
+                      className="size-7 cursor-pointer sm:size-10"
+                    />
+                  </div>
                 </li>
                 <li>
                   <Link href="/mypage">
                     <CircleUserRound
-                      size={35}
                       color="#a0b092"
-                      className="h-[20px] w-[20px] cursor-pointer sm:h-[40px] sm:w-[40px]"
+                      className="size-7 cursor-pointer sm:size-10"
                     />
                   </Link>
                 </li>
                 <li>
                   <Menu
-                    className="ml-1 h-[20px] w-[20px] cursor-pointer sm:h-[40px] sm:w-[40px]"
-                    size={35}
+                    className="ml-1 size-7 cursor-pointer sm:size-10"
                     color="#a0b092"
-                    onClick={() => setIsMenuOpen(true)}
+                    onClick={() => open('menu')}
                   />
                 </li>
               </>
@@ -77,13 +79,13 @@ const Header = () => {
             )}
           </ul>
         </nav>
-        {isMenuOpen && (
-          <Modal variation="menu" onClose={() => setIsMenuOpen(false)}>
-            <Menus onClose={() => setIsMenuOpen(false)} />
+        {isModalOpen && type === 'menu' && (
+          <Modal variation="menu" onClose={close}>
+            <Menus onClose={close} />
           </Modal>
         )}
-        {isNotiOpen && (
-          <Modal variation="notification" onClose={() => setIsNotiOpen(false)}>
+        {isModalOpen && type === 'noti' && (
+          <Modal variation="notification" onClose={close}>
             <Notifications />
           </Modal>
         )}
