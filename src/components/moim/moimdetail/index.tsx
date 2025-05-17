@@ -5,10 +5,8 @@ import {
   useMoimDetail,
 } from '@/api/hooks/useMoims';
 import Button from '@/components/common/button/Button';
-import ConfirmModal from '@/components/common/modal/ConfirmModal';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useModalStore } from '@/store/useModalStore';
-import { CalendarDays, Fullscreen, MapPin } from 'lucide-react';
+import { CalendarDays, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, useRouter } from 'next/navigation';
@@ -65,6 +63,8 @@ export const MoimDetail = ({ id }: Props) => {
       const mappedRole = roleMap[selectedRole];
       applyMoim(mappedRole);
       setShowApplyModal(false);
+      alert('참여 완료 되었습니다!');
+      router.refresh();
     }
   };
 
@@ -108,13 +108,15 @@ export const MoimDetail = ({ id }: Props) => {
         </div>
       </div>
       <div className="flex w-full justify-end">
-        <Button
-          className="w-24"
-          size="md"
-          onClick={() => setShowApplyModal(true)}
-        >
-          지원하기
-        </Button>
+        {!data.is_closed && (
+          <Button
+            className="w-24"
+            size="md"
+            onClick={() => setShowApplyModal(true)}
+          >
+            지원하기
+          </Button>
+        )}
       </div>
       <div className="flex flex-col items-center gap-6 text-sm md:flex-row">
         <div className="flex w-full flex-col gap-10 md:w-[420px]">
