@@ -25,7 +25,7 @@ const ChatMessage = ({ message, currentUserId, handleDelete }: MsgProps) => {
           className="-ml-0.5 mr-0.5 h-fit scale-125"
         />
       )}
-      <div className="flex max-w-[75%] flex-col gap-0.5">
+      <div className="flex max-w-[90%] flex-col gap-0.5">
         {!isMine && (
           <p
             title={message.nickname}
