@@ -190,7 +190,11 @@ export const MoimDetail = ({ id }: Props) => {
         <div className="flex gap-2">
           {isWriter && (
             <>
-              <Button className="w-[56px]" size="sm">
+              <Button
+                className="w-[56px]"
+                size="sm"
+                onClick={() => router.push(`/moims/edit/${id}`)}
+              >
                 수정
               </Button>
               <Button

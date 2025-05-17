@@ -1,22 +1,30 @@
 'use client';
 
+import { useMoimDetail } from '@/api/hooks/useMoims';
 import Button from '@/components/common/button/Button';
 import Dropdown from '@/components/common/input/Dropdown';
 import CommonInput from '@/components/common/input/Input';
+import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import TextEditor from '@/components/moim/texteditor';
 import { MOIM_CATEGORY, ROLE_LIST, YEAR_LIST } from '@/constants/config';
 import { useAuthStore } from '@/store/useAuthStore';
+import { PostMoim } from '@/types/moim';
 
 import { Search, Server } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function MoimForm() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState('');
-  const [place, setPlace] = useState('');
-  const [address, setAddress] = useState('');
+interface Props {
+  data: PostMoim;
+  id: number;
+}
+
+export default function MoimEditForm({ data, id }: Props) {
+  const [title, setTitle] = useState(data.title ?? '');
+  const [content, setContent] = useState(data.content ?? '');
+  const [category, setCategory] = useState(data.category ?? '');
+  const [place, setPlace] = useState(data.place_name ?? '');
+  const [address, setAddress] = useState(data.address ?? '');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
@@ -111,8 +119,8 @@ export default function MoimForm() {
 
     try {
       const accessToken = useAuthStore.getState().access;
-      const response = await fetch('https://api.mocomoco.store/posts/', {
-        method: 'POST',
+      const response = await fetch(`https://api.mocomoco.store/posts/${id}`, {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
