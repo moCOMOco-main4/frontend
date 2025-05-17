@@ -104,7 +104,7 @@ export const MoimDetail = ({ id }: Props) => {
             </div>
           </div>
           <hr />
-          <div className="w-full py-40">{data.content}</div>
+          <div className="w-full flex-wrap py-40">{data.content}</div>
         </div>
       </div>
       <div className="flex w-full justify-end">

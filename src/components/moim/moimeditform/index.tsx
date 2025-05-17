@@ -4,27 +4,25 @@ import { useMoimDetail } from '@/api/hooks/useMoims';
 import Button from '@/components/common/button/Button';
 import Dropdown from '@/components/common/input/Dropdown';
 import CommonInput from '@/components/common/input/Input';
-import LoadingSpinner from '@/components/common/loadingSpinner/LoadingSpinner';
 import TextEditor from '@/components/moim/texteditor';
 import { MOIM_CATEGORY, ROLE_LIST, YEAR_LIST } from '@/constants/config';
 import { useAuthStore } from '@/store/useAuthStore';
-import { PostMoim } from '@/types/moim';
-
 import { Search, Server } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
-  data: PostMoim;
   id: number;
 }
 
-export default function MoimEditForm({ data, id }: Props) {
-  const [title, setTitle] = useState(data.title ?? '');
-  const [content, setContent] = useState(data.content ?? '');
-  const [category, setCategory] = useState(data.category ?? '');
-  const [place, setPlace] = useState(data.place_name ?? '');
-  const [address, setAddress] = useState(data.address ?? '');
+export default function MoimEditForm({ id }: Props) {
+  const { data } = useMoimDetail(id);
+  const router = useRouter();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [category, setCategory] = useState('');
+  const [place, setPlace] = useState('');
+  const [address, setAddress] = useState('');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
@@ -39,7 +37,31 @@ export default function MoimEditForm({ data, id }: Props) {
   const [latitude, setLatitude] = useState<number>(0);
   const [longitude, setLongitude] = useState<number>(0);
   const [image, setImage] = useState<File | null>(null);
-  const router = useRouter();
+
+  useEffect(() => {
+    if (data) {
+      setTitle(data.title ?? '');
+      // setContent(data.content ?? '');
+      setCategory(data.category ?? '');
+      setPlace(data.place_name ?? '');
+      setAddress(data.address ?? '');
+      setLatitude(data.latitude ?? 0);
+      setLongitude(data.longitude ?? 0);
+
+      const date = new Date(data.date);
+      setYear(String(date.getFullYear()));
+      setMonth(String(date.getMonth() + 1).padStart(2, '0'));
+      setDay(String(date.getDate()).padStart(2, '0'));
+
+      setRoles({
+        프론트엔드: data.role_status?.frontend ?? 0,
+        백엔드: data.role_status?.backend ?? 0,
+        풀스택: data.role_status?.fullstack ?? 0,
+        디자이너: data.role_status?.designer ?? 0,
+      });
+    }
+  }, [data]);
+
   const increaseRole = (role: (typeof ROLE_LIST)[number]) => {
     setRoles(prev => ({ ...prev, [role]: prev[role] + 1 }));
   };
@@ -119,7 +141,10 @@ export default function MoimEditForm({ data, id }: Props) {
 
     try {
       const accessToken = useAuthStore.getState().access;
-      const response = await fetch(`https://api.mocomoco.store/posts/${id}`, {
+      formData.forEach(function (value, key) {
+        console.log(key, value);
+      });
+      const response = await fetch(`https://api.mocomoco.store/posts/${id}/`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${accessToken}`,
