@@ -86,7 +86,7 @@ const MyMoimCard = ({ moim }: MoimProps) => {
           >
             <Users size={20} />
             <span className="text-sm">
-              {moim.current_people}/{moim.max_people}
+              {moim.people_status}/{moim.max_people}
             </span>
           </span>
           {isLikelist ? (
