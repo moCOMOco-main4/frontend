@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import '@/styles/schedule.css';
 import MyMoimBox from '@/components/mypage/MyMoimBox';
@@ -21,9 +21,11 @@ const MySchedule = () => {
 
   const { data: schedules } = useQuery(scheduleOption.scheduleList(joinedMoim));
 
-  const scheduleDateSet = new Set(
-    schedules?.map(s => toLocalDateString(new Date(s.post_date))) ?? [],
-  );
+  const scheduleDateSet = useMemo(() => {
+    return new Set(
+      schedules?.map(s => toLocalDateString(new Date(s.post_date))) ?? [],
+    );
+  }, [schedules]);
   const setTileClassName = ({ date }: { date: Date }) => {
     const dateString = toLocalDateString(date);
     return scheduleDateSet.has(dateString) ? 'has-schedule' : '';
@@ -33,14 +35,16 @@ const MySchedule = () => {
     if (value && !Array.isArray(value)) setDate(value);
   };
 
-  const selectedSchedules =
-    !Array.isArray(date) && date
-      ? schedules?.filter(
-          schedule =>
-            toLocalDateString(new Date(schedule.post_date)) ===
-            toLocalDateString(date),
-        )
-      : [];
+  const selectedSchedules = useMemo(() => {
+    if (Array.isArray(date) || !date) return [];
+    return (
+      schedules?.filter(
+        schedule =>
+          toLocalDateString(new Date(schedule.post_date)) ===
+          toLocalDateString(date),
+      ) ?? []
+    );
+  }, [date, schedules]);
 
   return (
     <MyMoimBox title="일정 관리">
