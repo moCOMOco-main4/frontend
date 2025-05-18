@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import '@/styles/schedule.css';
-import { Schedule } from '@/types/schedule';
 import MyMoimBox from '@/components/mypage/MyMoimBox';
 import Calendar from 'react-calendar';
 import { useQuery } from '@tanstack/react-query';
@@ -21,63 +20,71 @@ const MySchedule = () => {
 
   const { data: schedules } = useQuery(scheduleOption.scheduleList(joinedMoim));
 
-  // const getSchedulesForDate = (date: Date) => {
-  //   const dateString = date.toISOString().split('T')[0];
-  //   return schedules?.filter((schedule: Schedule) =>
-  //     schedule.date.startsWith(dateString),
-  //   );
-  // };
-  // const selectedSchedules = !Array.isArray(date)
-  //   ? getSchedulesForDate(date)
-  //   : [];
-
-  // const getTileClassName = ({ date }: { date: Date }) => {
-  //   return selectedSchedules?.length > 0 ? 'has-schedule' : '';
-  // };
-
-  const handleDateChange = (newDate: Value) => {
-    setDate(newDate);
+  const scheduleDateSet = new Set(
+    schedules?.map(s => s.post_date.split('T')[0]) ?? [],
+  );
+  const setTileClassName = ({ date }: { date: Date }) => {
+    const dateString = date.toISOString().split('T')[0];
+    return scheduleDateSet.has(dateString) ? 'has-schedule' : '';
   };
+
+  const handleDateChange = (value: Value) => {
+    if (value && !Array.isArray(value)) setDate(value);
+  };
+
+  const selectedSchedules =
+    !Array.isArray(date) && date
+      ? schedules?.filter(schedule =>
+          schedule.post_date.startsWith(date.toISOString().split('T')[0]),
+        )
+      : [];
 
   return (
     <MyMoimBox title="일정 관리">
       <div className="rounded-2xl bg-white p-6">
         <div className="flex items-center justify-end gap-4"></div>
         <Calendar
-          onChange={handleDateChange}
           value={date}
+          onChange={handleDateChange}
           locale="ko-KR"
-          className="!w-full !border-none font-gmarket"
-          // tileClassName={getTileClassName}
+          className="react-calendar !w-full !border-none"
+          tileClassName={setTileClassName}
           navigationLabel={({ date }) => {
             const year = date.getFullYear();
             const month = date.getMonth() + 1;
             return (
               <span>
-                <span className="font-semibold text-main-dark">{year}</span>년{' '}
-                <span className="font-semibold text-main-dark">{month}</span>월
+                <span className="font-semibold text-main-header">{year}</span>
+                년&nbsp;
+                <span className="font-semibold text-main-header">{month}</span>
+                월
               </span>
             );
           }}
         />
-        {/* {Array.isArray(date) ? null : (
-          <div className="mt-4 space-y-2">
-            {selectedSchedules?.length > 0 ? (
+        {!Array.isArray(date) && (
+          <div className="mt-3 flex flex-col gap-2 text-sm">
+            {selectedSchedules && selectedSchedules.length > 0 ? (
               selectedSchedules.map(schedule => (
                 <div
                   key={schedule.id}
-                  className="rounded-lg border px-4 py-2 shadow-sm"
+                  className="flex items-center text-main-dark"
                 >
-                  <p className="font-semibold text-main-dark"></p>
+                  <div className="rounded-lg border px-4 py-2">
+                    {new Date(schedule.post_date).toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </div>
+                  &nbsp;&nbsp;
+                  <div> {schedule.post_title}</div>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-gray-400">
-                선택한 날짜에 일정이 없습니다.
-              </p>
+              <p className="text-gray-400">선택한 날짜에 일정이 없습니다.</p>
             )}
           </div>
-        )} */}
+        )}
       </div>
       <div className="mt-3 flex gap-4">
         <div className="flex items-center gap-2">
