@@ -8,6 +8,7 @@ import Calendar from 'react-calendar';
 import { useQuery } from '@tanstack/react-query';
 import { scheduleOption } from '@/api/options/scheduleOptions';
 import { myMoimOption } from '@/api/options/myMoimOption';
+import { toLocalDateString } from '@/components/mypage/schedule/date';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -21,10 +22,10 @@ const MySchedule = () => {
   const { data: schedules } = useQuery(scheduleOption.scheduleList(joinedMoim));
 
   const scheduleDateSet = new Set(
-    schedules?.map(s => s.post_date.split('T')[0]) ?? [],
+    schedules?.map(s => toLocalDateString(new Date(s.post_date))) ?? [],
   );
   const setTileClassName = ({ date }: { date: Date }) => {
-    const dateString = date.toISOString().split('T')[0];
+    const dateString = toLocalDateString(date);
     return scheduleDateSet.has(dateString) ? 'has-schedule' : '';
   };
 
@@ -34,8 +35,10 @@ const MySchedule = () => {
 
   const selectedSchedules =
     !Array.isArray(date) && date
-      ? schedules?.filter(schedule =>
-          schedule.post_date.startsWith(date.toISOString().split('T')[0]),
+      ? schedules?.filter(
+          schedule =>
+            toLocalDateString(new Date(schedule.post_date)) ===
+            toLocalDateString(date),
         )
       : [];
 
