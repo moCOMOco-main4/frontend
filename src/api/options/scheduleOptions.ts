@@ -2,10 +2,10 @@ import { scheduleAPI } from '@/api/functions/scheduleAPI';
 import { QueryClient, queryOptions } from '@tanstack/react-query';
 
 export const scheduleOption = {
-  scheduleList: (postId: number) =>
+  scheduleList: (postIds: number[]) =>
     queryOptions({
-      queryKey: ['schedule', postId],
-      queryFn: () => scheduleAPI.getScheduleList(postId),
+      queryKey: ['schedule', postIds],
+      queryFn: () => scheduleAPI.getScheduleList(postIds),
     }),
   postSchedule: (postId: number, queryClient: QueryClient) => ({
     mutationFn: ({ date, memo }: { date: string; memo: string }) =>
