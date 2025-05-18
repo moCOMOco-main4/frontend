@@ -9,11 +9,14 @@ import { useQuery } from '@tanstack/react-query';
 import { scheduleOption } from '@/api/options/scheduleOptions';
 import { myMoimOption } from '@/api/options/myMoimOption';
 import { toLocalDateString } from '@/components/mypage/schedule/date';
+import { useRouter } from 'next/navigation';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const MySchedule = () => {
+  const router = useRouter();
+
   const [date, setDate] = useState<Value>(new Date());
 
   const { data: joined } = useQuery(myMoimOption.joinedList());
@@ -84,7 +87,13 @@ const MySchedule = () => {
                     })}
                   </div>
                   &nbsp;&nbsp;
-                  <div> {schedule.post_title}</div>
+                  <div>
+                    <button
+                      onClick={() => router.push(`/moims/${schedule.post_id}`)}
+                    >
+                      {schedule.post_title}
+                    </button>
+                  </div>
                 </div>
               ))
             ) : (
