@@ -29,18 +29,14 @@ type User = {
 };
 
 interface Props {
-  params: {
-    userId: string;
-  };
+  userId: number;
 }
 
-export default function MoimMemberCard({ params }: Props) {
+export default function MoimMemberCard({ userId }: Props) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const { isLoggedIn } = useAuthStore();
-
-  const userId = Number(params.userId);
 
   const postJoinMutation = useMutation(chatOption.joinChat());
 

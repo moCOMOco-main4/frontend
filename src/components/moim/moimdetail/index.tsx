@@ -135,22 +135,24 @@ export const MoimDetail = ({ id }: Props) => {
             </div>
           </div>
           <p className="text-xl">주최자</p>
-          <div className="flex flex-col items-center">
-            <div className="h-[200px] w-[200px] overflow-auto rounded-full">
-              <Image
-                src={
-                  data.writer.profile_image
-                    ? data.writer.profile_image
-                    : UserImage
-                }
-                alt={data.writer.nickname}
-                width={200}
-                height={200}
-                className="rounded-full object-cover"
-              />
+          <Link href={`/moims/members/${data.writer.id}`}>
+            <div className="flex flex-col items-center">
+              <div className="h-[200px] w-[200px] overflow-auto rounded-full">
+                <Image
+                  src={
+                    data.writer.profile_image
+                      ? data.writer.profile_image
+                      : UserImage
+                  }
+                  alt={data.writer.nickname}
+                  width={200}
+                  height={200}
+                  className="rounded-full object-cover"
+                />
+              </div>
+              <p>{data.writer.nickname}</p>
             </div>
-            <p>{data.writer.nickname}</p>
-          </div>
+          </Link>
         </div>
         <div className="flex h-full w-full flex-col gap-4 md:pl-20">
           <p className="text-xl">장소</p>
@@ -173,20 +175,19 @@ export const MoimDetail = ({ id }: Props) => {
         <div className="flex gap-10">
           {data.participants && data.participants.length > 0 ? (
             data.participants.map(user => (
-              <div
-                key={user.id}
-                className="flex flex-col items-center gap-4 text-sm"
-              >
-                <div className="h-[100px] w-[100px] overflow-hidden rounded-full">
-                  <Image
-                    src={user.profile_image ? user.profile_image : UserImage}
-                    alt={user.nickname}
-                    width={300}
-                    height={300}
-                  />
+              <Link href={`/moims/members/${user.id}`} key={user.id}>
+                <div className="flex flex-col items-center gap-4 text-sm">
+                  <div className="h-[100px] w-[100px] overflow-hidden rounded-full">
+                    <Image
+                      src={user.profile_image ? user.profile_image : UserImage}
+                      alt={user.nickname}
+                      width={300}
+                      height={300}
+                    />
+                  </div>
+                  <p>{user.nickname}</p>
                 </div>
-                <p>{user.nickname}</p>
-              </div>
+              </Link>
             ))
           ) : (
             <div className="w-full p-10 text-center">
