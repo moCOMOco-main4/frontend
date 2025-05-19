@@ -110,7 +110,6 @@ export const MoimDetail = ({ id }: Props) => {
             className="w-full flex-wrap py-40"
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
-          <div>{data.content}</div>
         </div>
       </div>
       <div className="flex w-full justify-end">
