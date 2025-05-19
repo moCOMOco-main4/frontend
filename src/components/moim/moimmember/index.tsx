@@ -15,6 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import { chatOption } from '@/api/options/chatOption';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
+import Loading from '@/app/loading';
 
 type User = {
   id: number;
@@ -36,14 +37,16 @@ export default function MoimMemberCard({ userId }: Props) {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const { isLoggedIn } = useAuthStore();
+  const { access, hydrated, isLoggedIn, fetchUser } = useAuthStore();
 
   const postJoinMutation = useMutation(chatOption.joinChat());
 
   useEffect(() => {
+    if (!hydrated) return;
+
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
-      router.replace('/login');
+      router.replace('/auth/login');
       return;
     }
 
@@ -63,14 +66,16 @@ export default function MoimMemberCard({ userId }: Props) {
     };
 
     fetchUserProfile();
-  }, [userId]);
+  }, [hydrated, isLoggedIn, userId, router]);
+
+  if (loading) return <Loading />;
 
   if (!user) return <div> 프로필 정보를 표시할 수 없습니다. </div>;
 
   const fullImageUrl = user?.profile_image || Logo;
 
   return (
-    <div className="mx-auto w-full max-w-screen-md px-4">
+    <div className="mx-auto my-[3%] w-full max-w-screen-md px-4">
       <MyMoimBox title={`${user?.nickname} 님의 정보`}>
         <div className="mx-auto flex flex-col items-center justify-center gap-[10px] text-center">
           <div className="relative h-[150px] w-[150px]">
