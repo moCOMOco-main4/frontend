@@ -14,6 +14,7 @@ type ConfirmProps = {
   cancelText?: string;
   onConfirm?: (id: number) => void;
   className?: string;
+  children?: React.ReactNode;
 };
 
 const ConfirmModal = ({
@@ -24,6 +25,7 @@ const ConfirmModal = ({
   cancelText = '취소',
   onConfirm,
   className,
+  children,
 }: ConfirmProps) => {
   const { id, close } = useModalStore();
 
@@ -41,6 +43,7 @@ const ConfirmModal = ({
           <p className="text-center text-sm text-gray-400">{content}</p>
         )}
         {input && <CommonInput box="textarea" />}
+        {children && <div className="text-center text-sm">{children}</div>}
         <div className="mt-3 flex w-full justify-center gap-2">
           <Button color="outline" onClick={close} className="w-1/2">
             {cancelText}
