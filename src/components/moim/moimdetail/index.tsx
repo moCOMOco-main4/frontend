@@ -66,6 +66,8 @@ export const MoimDetail = ({ id }: Props) => {
       setShowApplyModal(false);
       alert('참여 완료 되었습니다!');
       router.refresh();
+    } else {
+      alert(error);
     }
   };
 
@@ -175,7 +177,7 @@ export const MoimDetail = ({ id }: Props) => {
                 key={user.id}
                 className="flex flex-col items-center gap-4 text-sm"
               >
-                <div className="h-[100px] w-[100px] overflow-auto rounded-full">
+                <div className="h-[100px] w-[100px] overflow-hidden rounded-full">
                   <Image
                     src={user.profile_image ? user.profile_image : UserImage}
                     alt={user.nickname}

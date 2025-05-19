@@ -113,7 +113,16 @@ export default function MoimForm() {
   };
 
   const handleSubmit = async () => {
-    if (!title || !content || !category || !place || !address) {
+    if (
+      !title ||
+      !content ||
+      !category ||
+      !place ||
+      !address ||
+      !year ||
+      !month ||
+      !day
+    ) {
       alert('필수 정보를 모두 입력해 주세요.');
       return;
     }
