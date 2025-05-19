@@ -89,7 +89,7 @@ const MyMoimCard = ({ moim }: MoimProps) => {
               onToggle={handleToggleLike}
             />
           ) : moim.is_writer ? (
-            <span className="w-9">
+            <span className="w-[50px]">
               <Settings
                 size={20}
                 color="gray"
