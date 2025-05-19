@@ -173,7 +173,7 @@ export default function MoimForm() {
       router.push('/moims');
     } catch (error) {
       console.error('모임 전송 중 오류:', error);
-      alert('오류가 발생했습니다.');
+      alert(`오류가 발생했습니다.${error}`);
     }
   };
   return (

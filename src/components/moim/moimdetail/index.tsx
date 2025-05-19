@@ -114,7 +114,35 @@ export const MoimDetail = ({ id }: Props) => {
           />
         </div>
       </div>
-      <div className="flex w-full justify-end">
+      <div className="flex w-full justify-between">
+        <div className="flex gap-2">
+          {isWriter && (
+            <>
+              <Button
+                className="w-[56px]"
+                size="sm"
+                onClick={() => router.push(`/moims/edit/${id}`)}
+              >
+                수정
+              </Button>
+              <Button
+                className="w-[56px]"
+                size="sm"
+                color="red"
+                onClick={() => setShowDeleteModal(true)}
+              >
+                삭제
+              </Button>
+            </>
+          )}
+        </div>
+        {showDeleteModal && (
+          <DetailPageModal
+            title="정말로 이 모임을 삭제하시겠습니까?"
+            onConfirm={handleDelete}
+            onCancel={() => setShowDeleteModal(false)}
+          />
+        )}
         {!data.is_closed && (
           <Button
             className="w-24"
@@ -123,6 +151,28 @@ export const MoimDetail = ({ id }: Props) => {
           >
             지원하기
           </Button>
+        )}
+        {showApplyModal && (
+          <DetailPageModal
+            title="어떤 역할로 지원하시겠습니까?"
+            onConfirm={handleApply}
+            onCancel={() => setShowApplyModal(false)}
+          >
+            <div className="flex flex-col gap-2">
+              {['프론트엔드', '백엔드', '디자이너', '풀스택'].map(role => (
+                <label key={role} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="role"
+                    value={role}
+                    checked={selectedRole === role}
+                    onChange={() => setSelectedRole(role)}
+                  />
+                  {role}
+                </label>
+              ))}
+            </div>
+          </DetailPageModal>
         )}
       </div>
       <div className="flex flex-col items-center gap-6 text-sm md:flex-row">
@@ -160,7 +210,8 @@ export const MoimDetail = ({ id }: Props) => {
             <KakaoMap latitude={data.latitude} longitude={data.longitude} />
           </div>
           <div className="flex gap-1">
-            <MapPin size={16} /> {data.place_name} ({data.address})
+            <MapPin size={16} /> {data.address}
+            <br />({data.place_name})
           </div>
         </div>
       </div>
@@ -196,58 +247,7 @@ export const MoimDetail = ({ id }: Props) => {
           )}
         </div>
       </div>
-      <div className="flex justify-between pb-12 pt-10">
-        <div className="flex gap-2">
-          {isWriter && (
-            <>
-              <Button
-                className="w-[56px]"
-                size="sm"
-                onClick={() => router.push(`/moims/edit/${id}`)}
-              >
-                수정
-              </Button>
-              <Button
-                className="w-[56px]"
-                size="sm"
-                color="red"
-                onClick={() => setShowDeleteModal(true)}
-              >
-                삭제
-              </Button>
-            </>
-          )}
-        </div>
-        {showDeleteModal && (
-          <DetailPageModal
-            title="정말로 이 모임을 삭제하시겠습니까?"
-            onConfirm={handleDelete}
-            onCancel={() => setShowDeleteModal(false)}
-          />
-        )}
-
-        {showApplyModal && (
-          <DetailPageModal
-            title="어떤 역할로 지원하시겠습니까?"
-            onConfirm={handleApply}
-            onCancel={() => setShowApplyModal(false)}
-          >
-            <div className="flex flex-col gap-2">
-              {['프론트엔드', '백엔드', '디자이너', '풀스택'].map(role => (
-                <label key={role} className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="role"
-                    value={role}
-                    checked={selectedRole === role}
-                    onChange={() => setSelectedRole(role)}
-                  />
-                  {role}
-                </label>
-              ))}
-            </div>
-          </DetailPageModal>
-        )}
+      <div className="flex justify-end pb-12 pt-10">
         <Link href={'/moims'}>
           <Button className="w-[56px]" size="sm">
             목록
