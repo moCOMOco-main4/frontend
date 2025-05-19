@@ -27,7 +27,8 @@ const ConfirmModal = ({
   className,
   children,
 }: ConfirmProps) => {
-  const { id, close } = useModalStore();
+  const id = useModalStore(state => state.modalData.id);
+  const close = useModalStore(state => state.close);
 
   const modalRef = useRef<HTMLDivElement>(null);
   useClickOutside(modalRef, close);
