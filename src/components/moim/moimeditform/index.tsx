@@ -211,7 +211,7 @@ export default function MoimEditForm({ id }: Props) {
         return;
       }
 
-      alert('모임이 생성되었습니다.');
+      alert('모임 수정이 완료되었습니다.');
       router.push('/moims');
     } catch (error) {
       console.error('모임 전송 중 오류:', error);
@@ -361,7 +361,7 @@ export default function MoimEditForm({ id }: Props) {
           className="mb-3 w-[60px] self-center"
           onClick={handleSubmit}
         >
-          작성
+          수정
         </Button>
       </div>
     </>
