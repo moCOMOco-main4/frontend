@@ -201,11 +201,9 @@
 > 
 > [📜 요구사항 정의서](https://docs.google.com/spreadsheets/d/10pRKf7R6h8pqu2bZXpOhcKV4o6SFsKuUjfmEoLp117A/edit?gid=428803499#gid=428803499)
 > 
-> [📜 ERD](https://drive.google.com/file/d/1-LZ4oWvXtdpx6buySfVvc_JxYojbUp48/view?usp=drive_link)
-> 
 > [📜 테이블 명세서](https://docs.google.com/spreadsheets/d/1t3OtOHbMm0FW5SeMhXcjHg2KSLSbOJCqFpOWH59G9Yw/edit?gid=0#gid=0)
 >
-> [📜 화면 정의서](https://www.figma.com/design/ok3cpOmMOy44xVd5w6qpIX/Untitled?node-id=0-1&p=f&t=POxV5d6vhi1xnTq0-0)
+> [📜 화면 정의서](https://www.figma.com/design/vG39DWPAqEVEWNQZhGWdEt/%EB%AA%A8%EC%BD%94%EB%AA%A8%EC%BD%94-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?t=xm42t4gxHNsu4jXr-0)
 > 
 
 
