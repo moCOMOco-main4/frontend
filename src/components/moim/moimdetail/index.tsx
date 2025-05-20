@@ -143,7 +143,7 @@ export const MoimDetail = ({ id }: Props) => {
             onCancel={() => setShowDeleteModal(false)}
           />
         )}
-        {!data.is_closed && (
+        {!data.is_closed && !isWriter && (
           <Button
             className="w-24"
             size="md"
