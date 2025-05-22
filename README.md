@@ -185,10 +185,12 @@
 
 ## :clipboard: Documents
 
-> [📜 API 명세서](https://docs.google.com/spreadsheets/d/1F6xNcYVO3vJ38lsJw_J3GF30JE0AERvMfNzOfwWoeyE/edit?gid=1565530336#gid=1565530336)
+> [📜 API 명세서](https://api.mocomoco.store/api/docs/)
 >
-> [📜 요구사항 정의서](https://docs.google.com/spreadsheets/d/10pRKf7R6h8pqu2bZXpOhcKV4o6SFsKuUjfmEoLp117A/edit?gid=428803499#gid=428803499)
+> [📜 요구사항 정의서](https://docs.google.com/spreadsheets/d/1nk2VYzxCt2twMjNwjXDEmzATd7vcrYEPI6TXR7r1niE/edit?pli=1&gid=1940452106#gid=1940452106)
 >
-> [📜 테이블 명세서](https://docs.google.com/spreadsheets/d/1t3OtOHbMm0FW5SeMhXcjHg2KSLSbOJCqFpOWH59G9Yw/edit?gid=0#gid=0)
+> [📜 테이블 명세서](https://docs.google.com/spreadsheets/d/1_dZHSUO7f2W8TbmoRWCSNq3oXzqNW03tCdp4vUhwu4w/edit?gid=252353432#gid=252353432)
 >
-> [📜 화면 정의서](https://www.figma.com/design/vG39DWPAqEVEWNQZhGWdEt/%EB%AA%A8%EC%BD%94%EB%AA%A8%EC%BD%94-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?t=xm42t4gxHNsu4jXr-0)
+> [📜 화면 정의서](https://docs.google.com/spreadsheets/d/1iR_JWWzVIkRLOtoPgyF5I2zY9RuzGaoK_DBJDdUdw94/edit?gid=317187186#gid=317187186)
+> 
+> [📜 와이어 프레임](https://www.figma.com/design/vG39DWPAqEVEWNQZhGWdEt/%EB%AA%A8%EC%BD%94%EB%AA%A8%EC%BD%94-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84?t=xm42t4gxHNsu4jXr-0)
