@@ -51,6 +51,13 @@
 
 ---
 
+## 📀 시연 영상
+https://github.com/user-attachments/assets/ffa3ad05-300f-4447-9843-656b551d1de7
+
+
+
+---
+
 ## 🧰 사용 스택
 
 ### FE
