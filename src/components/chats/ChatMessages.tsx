@@ -1,7 +1,7 @@
 'use client';
 
 import ChatMessage from '@/components/chats/ChatMessage';
-import { ChevronLeft, Send } from 'lucide-react';
+import { ChevronLeft, Send, UserCheck } from 'lucide-react';
 import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -19,6 +19,25 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const socketRef = useRef<WebSocket | null>(null);
   const [message, setMessage] = useState<Chats[]>([]);
   const [inputValue, setInputValue] = useState('');
+
+  const currentUserId = useAuthStore(state => state.user?.id!);
+  const { selectedRoomTitle, exitRoom } = useChatStore();
+
+  const { data } = useQuery(chatOption.chatMessages(room_id));
+  const oldMessages = data ?? [];
+  const userCache = useRef<
+    Record<number, { nickname: string; profile_image: string }>
+  >({});
+
+  useEffect(() => {
+    oldMessages.forEach(msg => {
+      userCache.current[msg.chat_user_id] = {
+        nickname: msg.nickname,
+        profile_image: msg.profile_image,
+      };
+    });
+  }, [oldMessages]);
+
   useEffect(() => {
     const socket = new WebSocket(SOCKET_URL);
     socketRef.current = socket;
@@ -26,7 +45,15 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     socket.onmessage = event => {
       try {
         const parsed = JSON.parse(event.data);
-        setMessage(prev => [...prev, parsed]);
+        const userInfo = userCache.current[parsed.chat_user_id] ?? {};
+
+        const merged = {
+          ...parsed,
+          nickname: userInfo.nickname,
+          profile_image: userInfo.profile_image,
+        };
+
+        setMessage(prev => [...prev, merged]);
       } catch (e) {
         console.error('메시지 파싱 실패:', e);
       }
@@ -46,12 +73,6 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
       setInputValue('');
     }
   };
-
-  const currentUserId = useAuthStore(state => state.user?.id!);
-  const { selectedRoomTitle, exitRoom } = useChatStore();
-
-  const { data } = useQuery(chatOption.chatMessages(room_id));
-  const oldMessages = data ?? [];
 
   const queryClient = useQueryClient();
 
