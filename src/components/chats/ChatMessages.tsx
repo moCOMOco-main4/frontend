@@ -31,10 +31,12 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
 
   useEffect(() => {
     oldMessages.forEach(msg => {
-      userCache.current[msg.chat_user_id] = {
-        nickname: msg.nickname,
-        profile_image: msg.profile_image,
-      };
+      if (!userCache.current[msg.chat_user_id]) {
+        userCache.current[msg.chat_user_id] = {
+          nickname: msg.nickname,
+          profile_image: msg.profile_image,
+        };
+      }
     });
   }, [oldMessages]);
 
@@ -92,10 +94,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     deleteMessageMutation.mutate(msgId);
   };
 
-  const allMessages = useMemo(
-    () => [...oldMessages, ...message],
-    [oldMessages, message],
-  );
+  const allMessages = [...oldMessages, ...message];
 
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   useEffect(() => {
