@@ -120,7 +120,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
       <div className="flex-1 space-y-2.5 overflow-y-auto py-2 pr-1">
         {allMessages?.map((msg, i) => (
           <div
-            key={i}
+            key={msg.ChatMessage_id ?? `${msg.created_at}-${i}`}
             ref={i === allMessages.length - 1 ? lastMessageRef : null}
           >
             <ChatMessage
