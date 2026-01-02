@@ -25,15 +25,12 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
 
   const { data } = useQuery(chatOption.chatMessages(room_id));
   const oldMessages = data ?? [];
-  const userCache = useRef<
-    Record<number, { nickname: string; profile_image: string }>
-  >({});
+  const userCache = useRef<Record<number, { profile_image: string }>>({});
 
   useEffect(() => {
     oldMessages.forEach(msg => {
       if (!userCache.current[msg.chat_user_id]) {
         userCache.current[msg.chat_user_id] = {
-          nickname: msg.nickname,
           profile_image: msg.profile_image,
         };
       }
@@ -51,8 +48,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
 
         const merged = {
           ...parsed,
-          nickname: userInfo.nickname,
-          profile_image: userInfo.profile_image,
+          profile_image: userInfo.profile_image || parsed.profile_image || null,
         };
 
         setMessage(prev => [...prev, merged]);
