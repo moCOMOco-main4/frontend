@@ -17,14 +17,14 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const access = useAuthStore(state => state.access);
   const SOCKET_URL = `wss://api.mocomoco.store/ws/chat/${room_id}/?token=${access}`;
   const socketRef = useRef<WebSocket | null>(null);
-  const [message, setMessage] = useState<Chats[]>([]);
+
+  const [newMessage, setNewMessage] = useState<Chats[]>([]);
   const [inputValue, setInputValue] = useState('');
 
   const currentUserId = useAuthStore(state => state.user?.id!);
   const { selectedRoomTitle, exitRoom } = useChatStore();
 
-  const { data } = useQuery(chatOption.chatMessages(room_id));
-  const oldMessages = data ?? [];
+  const { data: oldMessages = [] } = useQuery(chatOption.chatMessages(room_id));
   const userCache = useRef<Record<number, { profile_image: string }>>({});
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
           profile_image: userInfo.profile_image || parsed.profile_image || null,
         };
 
-        setMessage(prev => [...prev, merged]);
+        setNewMessage(prev => [...prev, merged]);
       } catch (e) {
         console.error('메시지 파싱 실패:', e);
       }
@@ -90,7 +90,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     deleteMessageMutation.mutate(msgId);
   };
 
-  const allMessages = [...oldMessages, ...message];
+  const allMessages = [...oldMessages, ...newMessage];
 
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   useEffect(() => {
