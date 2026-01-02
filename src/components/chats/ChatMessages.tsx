@@ -1,7 +1,7 @@
 'use client';
 
 import ChatMessage from '@/components/chats/ChatMessage';
-import { ChevronLeft, Send, UserCheck } from 'lucide-react';
+import { ChevronLeft, Send } from 'lucide-react';
 import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -25,16 +25,13 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const { selectedRoomTitle, exitRoom } = useChatStore();
 
   const { data: oldMessages = [] } = useQuery(chatOption.chatMessages(room_id));
-  const userCache = useRef<Record<number, { profile_image: string }>>({});
 
-  useEffect(() => {
-    oldMessages.forEach(msg => {
-      if (!userCache.current[msg.chat_user_id]) {
-        userCache.current[msg.chat_user_id] = {
-          profile_image: msg.profile_image,
-        };
-      }
+  const userProfileImage = useMemo(() => {
+    const foundImageMsg = oldMessages.find(msg => {
+      msg.chat_user_id !== currentUserId && msg.profile_image;
     });
+
+    return foundImageMsg?.profile_image || null;
   }, [oldMessages]);
 
   useEffect(() => {
@@ -44,14 +41,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     socket.onmessage = event => {
       try {
         const parsed = JSON.parse(event.data);
-        const userInfo = userCache.current[parsed.chat_user_id] ?? {};
-
-        const merged = {
-          ...parsed,
-          profile_image: userInfo.profile_image || parsed.profile_image || null,
-        };
-
-        setNewMessage(prev => [...prev, merged]);
+        setNewMessage(prev => [...prev, parsed]);
       } catch (e) {
         console.error('메시지 파싱 실패:', e);
       }
@@ -122,6 +112,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
             <ChatMessage
               message={msg}
               currentUserId={currentUserId}
+              profileImage={userProfileImage}
               handleDelete={() => handleDelete(msg.ChatMessage_id)}
             />
           </div>
