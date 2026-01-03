@@ -24,16 +24,6 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const currentUserId = useAuthStore(state => state.user?.id!);
   const { selectedRoomTitle, exitRoom } = useChatStore();
 
-  const { data: oldMessages = [] } = useQuery(chatOption.chatMessages(room_id));
-
-  const userProfileImage = useMemo(() => {
-    const foundImageMsg = oldMessages.find(msg => {
-      msg.chat_user_id !== currentUserId && msg.profile_image;
-    });
-
-    return foundImageMsg?.profile_image || null;
-  }, [oldMessages]);
-
   useEffect(() => {
     const socket = new WebSocket(SOCKET_URL);
     socketRef.current = socket;
@@ -80,7 +70,21 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     deleteMessageMutation.mutate(msgId);
   };
 
+  const { data: oldMessages = [] } = useQuery(chatOption.chatMessages(room_id));
   const allMessages = [...oldMessages, ...newMessage];
+
+  const { otherId, otherImage } = useMemo(() => {
+    const otherMsg = allMessages.find(
+      msg => msg.chat_user_id !== currentUserId,
+    );
+
+    return {
+      otherId: otherMsg?.chat_user_id,
+      otherImage: otherMsg?.profile_image,
+    };
+  }, [allMessages, currentUserId]);
+  const { data: otherProfile } = useQuery(chatOption.chatUser(otherId));
+  const userProfileImage = otherProfile?.profile_image || otherImage || null;
 
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   useEffect(() => {

@@ -24,7 +24,7 @@ const ChatMessage = ({
     <div className={`group flex ${isMine ? 'justify-end' : 'justify-start'}`}>
       {!isMine && (
         <Image
-          src={profileImage || message.profile_image || UserProfile}
+          src={profileImage || UserProfile}
           alt={message.nickname || '유저'}
           width={40}
           height={40}
