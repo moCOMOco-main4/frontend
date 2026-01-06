@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { chatOption } from '@/api/options/chatOption';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Chats } from '@/types/chat';
+import { useSocket } from '@/hooks/useSocket';
 
 type MsgsProps = {
   room_id: string;
@@ -15,53 +15,20 @@ type MsgsProps = {
 
 const ChatMessages = ({ room_id }: MsgsProps) => {
   const access = useAuthStore(state => state.access);
-  const SOCKET_URL = `wss://api.mocomoco.store/ws/chat/${room_id}/?token=${access}`;
-  const socketRef = useRef<WebSocket | null>(null);
+  const currentUserId = useAuthStore(state => state.user?.id!);
 
-  const [newMessage, setNewMessage] = useState<Chats[]>([]);
+  const { selectedRoomTitle, exitRoom } = useChatStore();
   const [inputValue, setInputValue] = useState('');
 
-  const currentUserId = useAuthStore(state => state.user?.id!);
-  const { selectedRoomTitle, exitRoom } = useChatStore();
-
-  useEffect(() => {
-    const socket = new WebSocket(SOCKET_URL);
-    socketRef.current = socket;
-
-    socket.onmessage = event => {
-      try {
-        const parsed = JSON.parse(event.data);
-        setNewMessage(prev => [...prev, parsed]);
-      } catch (e) {
-        console.error('메시지 파싱 실패:', e);
-      }
-    };
-
-    return () => {
-      socket.close();
-    };
-  }, [SOCKET_URL]);
-
-  const sendMessage = () => {
-    if (socketRef.current?.readyState === WebSocket.OPEN && inputValue.trim()) {
-      const messagePayload = {
-        message: inputValue,
-      };
-      socketRef.current.send(JSON.stringify(messagePayload));
-      setInputValue('');
-    }
-  };
+  const { newMessage, sendMessage } = useSocket(room_id, access);
 
   const queryClient = useQueryClient();
 
-  // const postMessageMutation = useMutation(
-  //   chatOption.postMessage(room_id, queryClient),
-  // );
-  // const handleSend = () => {
-  //   if (inputValue.trim() === '') return;
-  //   postMessageMutation.mutate(inputValue);
-  //   setInputValue('');
-  // };
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    const success = sendMessage(inputValue);
+    if (success) setInputValue('');
+  };
 
   const deleteMessageMutation = useMutation(
     chatOption.deleteMessage(room_id, queryClient),
@@ -123,11 +90,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
         ))}
       </div>
       <form
-        onSubmit={e => {
-          e.preventDefault();
-          // handleSend();
-          sendMessage();
-        }}
+        onSubmit={handleSend}
         className="flex items-center justify-between gap-2 rounded-xl bg-white p-3"
       >
         <input
