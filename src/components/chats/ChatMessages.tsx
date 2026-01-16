@@ -18,7 +18,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const currentUserId = useAuthStore(state => state.user?.id!);
 
   const { selectedRoomTitle, exitRoom } = useChatStore();
-  const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { newMessage, sendMessage } = useSocket(room_id, access);
 
@@ -26,8 +26,10 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
-    const success = sendMessage(inputValue);
-    if (success) setInputValue('');
+
+    const inputMessage = inputRef.current?.value.trim() || '';
+    const success = sendMessage(inputMessage);
+    if (success && inputRef.current) inputRef.current.value = '';
   };
 
   const deleteMessageMutation = useMutation(
@@ -95,10 +97,9 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
       >
         <input
           type="text"
-          value={inputValue}
+          ref={inputRef}
           className="flex-1 border-none text-sm text-gray-700 outline-none"
           placeholder="메시지를 입력하세요."
-          onChange={e => setInputValue(e.target.value)}
         />
         <button type="submit">
           <Send stroke="gray" size={20} className="cursor-pointer" />
