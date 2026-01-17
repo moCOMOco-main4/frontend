@@ -6,7 +6,7 @@ import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { chatOption } from '@/api/options/chatOption';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSocket } from '@/hooks/useSocket';
 
 type MsgsProps = {
@@ -35,9 +35,12 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const deleteMessageMutation = useMutation(
     chatOption.deleteMessage(room_id, queryClient),
   );
-  const handleDelete = (msgId: number) => {
-    deleteMessageMutation.mutate(msgId);
-  };
+  const handleDelete = useCallback(
+    (msgId: number) => {
+      deleteMessageMutation.mutate(msgId);
+    },
+    [deleteMessageMutation],
+  );
 
   const { data: oldMessages = [] } = useQuery(chatOption.chatMessages(room_id));
   const allMessages = [...oldMessages, ...newMessage];
@@ -86,7 +89,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
               message={msg}
               currentUserId={currentUserId}
               profileImage={userProfileImage}
-              handleDelete={() => handleDelete(msg.ChatMessage_id)}
+              handleDelete={handleDelete}
             />
           </div>
         ))}
