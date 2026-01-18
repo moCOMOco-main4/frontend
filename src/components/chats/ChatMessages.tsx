@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { chatOption } from '@/api/options/chatOption';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSocket } from '@/hooks/useSocket';
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 type MsgsProps = {
   room_id: string;
@@ -20,6 +21,8 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const { selectedRoomTitle, exitRoom } = useChatStore();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
+
   const { newMessage, sendMessage } = useSocket(room_id, access);
 
   const queryClient = useQueryClient();
@@ -30,6 +33,14 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     const inputMessage = inputRef.current?.value.trim() || '';
     const success = sendMessage(inputMessage);
     if (success && inputRef.current) inputRef.current.value = '';
+
+    setTimeout(() => {
+      virtuosoRef.current?.scrollToIndex({
+        index: allMessages.length - 1,
+        align: 'end',
+        behavior: 'smooth',
+      });
+    }, 50);
   };
 
   const deleteMessageMutation = useMutation(
@@ -58,19 +69,6 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const { data: otherProfile } = useQuery(chatOption.chatUser(otherId));
   const userProfileImage = otherProfile?.profile_image || otherImage || null;
 
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  useEffect(() => {
-    setIsFirstLoad(true);
-  }, [room_id]);
-
-  const lastMessageRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    lastMessageRef.current?.scrollIntoView({
-      behavior: isFirstLoad ? 'auto' : 'smooth',
-    });
-    if (isFirstLoad) setIsFirstLoad(false);
-  }, [allMessages]);
-
   return (
     <div className="flex h-full flex-col p-1">
       <div className="flex items-center border-b border-main-base py-3">
@@ -80,19 +78,24 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
         <span className="ml-1 font-bold">{selectedRoomTitle || '채팅방'}</span>
       </div>
       <div className="flex-1 space-y-2.5 overflow-y-auto py-2 pr-1">
-        {allMessages?.map((msg, i) => (
-          <div
-            key={msg.ChatMessage_id ?? `${msg.created_at}-${i}`}
-            ref={i === allMessages.length - 1 ? lastMessageRef : null}
-          >
-            <ChatMessage
-              message={msg}
-              currentUserId={currentUserId}
-              profileImage={userProfileImage}
-              handleDelete={handleDelete}
-            />
-          </div>
-        ))}
+        <Virtuoso
+          style={{ height: '100%' }}
+          ref={virtuosoRef}
+          data={allMessages}
+          initialTopMostItemIndex={allMessages.length - 1}
+          followOutput="auto"
+          alignToBottom
+          itemContent={(index, msg) => (
+            <div className="py-1">
+              <ChatMessage
+                message={msg}
+                currentUserId={currentUserId}
+                profileImage={userProfileImage}
+                handleDelete={handleDelete}
+              />
+            </div>
+          )}
+        />
       </div>
       <form
         onSubmit={handleSend}
