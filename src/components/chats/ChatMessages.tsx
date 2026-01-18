@@ -6,7 +6,7 @@ import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { chatOption } from '@/api/options/chatOption';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useSocket } from '@/hooks/useSocket';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
@@ -24,8 +24,21 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
 
   const { newMessage, sendMessage } = useSocket(room_id, access);
+  const { data: oldMessages = [] } = useQuery(chatOption.chatMessages(room_id));
+  const allMessages = [...oldMessages, ...newMessage];
 
-  const queryClient = useQueryClient();
+  const { otherId, otherImage } = useMemo(() => {
+    const otherMsg = allMessages.find(
+      msg => msg.chat_user_id !== currentUserId,
+    );
+
+    return {
+      otherId: otherMsg?.chat_user_id,
+      otherImage: otherMsg?.profile_image,
+    };
+  }, [allMessages, currentUserId]);
+  const { data: otherProfile } = useQuery(chatOption.chatUser(otherId));
+  const userProfileImage = otherProfile?.profile_image || otherImage || null;
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +56,7 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     }, 50);
   };
 
+  const queryClient = useQueryClient();
   const deleteMessageMutation = useMutation(
     chatOption.deleteMessage(room_id, queryClient),
   );
@@ -52,22 +66,6 @@ const ChatMessages = ({ room_id }: MsgsProps) => {
     },
     [deleteMessageMutation],
   );
-
-  const { data: oldMessages = [] } = useQuery(chatOption.chatMessages(room_id));
-  const allMessages = [...oldMessages, ...newMessage];
-
-  const { otherId, otherImage } = useMemo(() => {
-    const otherMsg = allMessages.find(
-      msg => msg.chat_user_id !== currentUserId,
-    );
-
-    return {
-      otherId: otherMsg?.chat_user_id,
-      otherImage: otherMsg?.profile_image,
-    };
-  }, [allMessages, currentUserId]);
-  const { data: otherProfile } = useQuery(chatOption.chatUser(otherId));
-  const userProfileImage = otherProfile?.profile_image || otherImage || null;
 
   return (
     <div className="flex h-full flex-col p-1">
